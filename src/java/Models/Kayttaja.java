@@ -41,8 +41,8 @@ public class Kayttaja {
         while (tulokset.next()) {
             //Luodaan tuloksia vastaava olio ja palautetaan olio:
             Kayttaja k = new Kayttaja();
-            k.setKayttajaId(tulokset.getInt("id"));
-            k.setKayttajatunnus(tulokset.getString("tunnus"));
+            k.setKayttajaId(tulokset.getInt("kayttajaId"));
+            k.setKayttajatunnus(tulokset.getString("kayttajatunnus"));
             k.setSalasana(tulokset.getString("salasana"));
 
             kayttajat.add(k);
