@@ -1,0 +1,14 @@
+@charset "utf-8";
+/* CSS Document */
+
+.bar
+{
+ width:40px;
+}
+
+#right
+{
+    float:right;
+    margin-right:20px;
+    background:#06F;
+}
