@@ -1,14 +1,22 @@
-CREATE TABLE Askareet
-(
-id SERIAL PRIMARY KEY,
-Tarkeys integer,
-Nimi varchar(255) NOT NULL,
-luokka_id INTEGER REFERENCES Luokat(id)
-);
+Create table kayttaja (
+kayttajaId serial primary key,
+kayttajaTunnus varchar (10) unique, 
+salasana varchar (20));
 
-CREATE TABLE Luokat
-(
-id SERIAL PRIMARY KEY,
-Nimi varchar(255) NOT NULL,
-askare_id INTEGER REFERENCES Askareet(id)
-);
+create table tarkeys (
+tarkeysId serial primary key,
+arvo varchar (3),
+kayttajaId integer references kayttaja(kayttajaId) on delete cascade);
+
+create table luokka (
+luokkaId serial primary key,
+nimi varchar (40),
+kayttajaId integer references kayttaja(kayttajaId) on delete cascade);
+
+
+create table askare (
+askareenId serial primary key,
+nimi varchar (40) ,
+kayttajaId integer references kayttaja(kayttajaId) on delete cascade,
+tarkeysId integer references tarkeys(tarkeysId) on delete cascade,
+luokkaId integer references luokka(luokkaId) on delete cascade);
