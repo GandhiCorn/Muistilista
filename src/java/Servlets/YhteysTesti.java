@@ -44,7 +44,7 @@ public class YhteysTesti extends HttpServlet {
             out.println("<title>Servlet NS</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet NS at " + db.getKayttajanNimi("salasana") + "</h1>");
+            out.println("<h1>Servlet NS at " + ("salasana") + "</h1>");
             out.println("</body>");
             out.println("</html>");
         } finally {

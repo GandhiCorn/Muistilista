@@ -8,6 +8,10 @@
         <servlet-name>YhteysTesti</servlet-name>
         <servlet-class>Servlets.YhteysTesti</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>TulostaKayttajat</servlet-name>
+        <servlet-class>Servlets.TulostaKayttajat</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Kokeilu</servlet-name>
         <url-pattern>/Kokeilu</url-pattern>
@@ -15,6 +19,10 @@
     <servlet-mapping>
         <servlet-name>YhteysTesti</servlet-name>
         <url-pattern>/YhteysTesti</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TulostaKayttajat</servlet-name>
+        <url-pattern>/TulostaKayttajat</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
