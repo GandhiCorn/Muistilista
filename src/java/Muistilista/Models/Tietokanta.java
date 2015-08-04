@@ -11,7 +11,7 @@ import javax.sql.DataSource;
  *
  * @author Jyri
  */
-public class Yhteys extends HttpServlet {
+public class Tietokanta extends HttpServlet {
 
     public static Connection getYhteys() throws NamingException, SQLException {
         InitialContext cxt = new InitialContext();

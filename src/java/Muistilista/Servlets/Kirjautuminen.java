@@ -70,9 +70,9 @@ public class Kirjautuminen extends ToistuvaKoodi {
                 asetaVirhe("Kirjautuminen epäonnistui! Käyttäjää ei löytynyt järjestelmästä", request);
                 naytaJSP("login.jsp", request, response);
             } else {
-                HttpSession session = request.getSession();
-                session.setAttribute("kirjautunut", kayttaja);
-                response.sendRedirect("Index");
+                //HttpSession session = request.getSession();
+                //session.setAttribute("kirjautunut", kayttaja);
+                naytaJSP("index.jsp", request, response);
             }
 
         } catch (NamingException ex) {
