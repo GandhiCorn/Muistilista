@@ -32,6 +32,14 @@
         <servlet-name>testi</servlet-name>
         <servlet-class>Muistilista.Servlets.testi</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>toimiiko</servlet-name>
+        <servlet-class>Muistilista.Servlets.toimiiko</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>getKayttajat</servlet-name>
+        <servlet-class>Muistilista.Servlets.getKayttajat</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Kokeilu</servlet-name>
         <url-pattern>/Kokeilu</url-pattern>
@@ -63,6 +71,14 @@
     <servlet-mapping>
         <servlet-name>testi</servlet-name>
         <url-pattern>/testi</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>toimiiko</servlet-name>
+        <url-pattern>/toimiiko</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>getKayttajat</servlet-name>
+        <url-pattern>/getKayttajat</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

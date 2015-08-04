@@ -5,11 +5,13 @@
  */
 package Muistilista.Servlets;
 
-import Muistilista.Models.Kayttaja;
+import Muistilista.Models.Yhteys;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.NamingException;
@@ -22,7 +24,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author fuksi
  */
-public class NewServlet extends HttpServlet {
+public class toimiiko extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -33,29 +35,34 @@ public class NewServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+//HttpServlet-luokan perivään servlettiin menevä metodi:
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, SQLException, NamingException {
-        response.setContentType("text/html;charset=UTF-8");
+            throws ServletException, IOException, NamingException, SQLException {
+        Connection yhteys = Yhteys.getYhteys(); //Haetaan tietokantaluokalta yhteysolio
+        PreparedStatement kysely = null;
+        ResultSet tulokset = null;
         PrintWriter out = response.getWriter();
+        response.setContentType("text/plain;charset=UTF-8");
+
         try {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet NewServlet</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<ul>");
-            List<Kayttaja> kayttajat = Kayttaja.getKayttajat();
-            for (Kayttaja kayttaja : kayttajat) {
-                out.println("<li>" + kayttaja.getKayttajatunnus() + "<li>");
+            //Alustetaan muuttuja jossa on Select-kysely, joka palauttaa lukuarvon:
+            String sqlkysely = "SELECT 1+1 as two";
+
+            kysely = yhteys.prepareStatement(sqlkysely);
+            tulokset = kysely.executeQuery();
+            if (tulokset.next()) {
+                //Tuloksen arvoksi pitäisi tulla numero kaksi.
+                int tulos = tulokset.getInt("two");
+                out.println("Tulos: " + tulos);
+            } else {
+                out.println("Virhe!");
             }
-            out.println("</ul>");
-            out.println("</body>");
-            out.println("</html>");
-        } finally {
-            out.close();
+        } catch (Exception e) {
+            out.println("Virhe: " + e.getMessage());
         }
+
+        tulokset.close();
+        kysely.close();
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -72,10 +79,10 @@ public class NewServlet extends HttpServlet {
             throws ServletException, IOException {
         try {
             processRequest(request, response);
-        } catch (SQLException ex) {
-            Logger.getLogger(NewServlet.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NamingException ex) {
-            Logger.getLogger(NewServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(toimiiko.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(toimiiko.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -92,10 +99,10 @@ public class NewServlet extends HttpServlet {
             throws ServletException, IOException {
         try {
             processRequest(request, response);
-        } catch (SQLException ex) {
-            Logger.getLogger(NewServlet.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NamingException ex) {
-            Logger.getLogger(NewServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(toimiiko.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(toimiiko.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

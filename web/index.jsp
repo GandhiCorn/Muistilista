@@ -1,17 +1,36 @@
-<%-- 
-    Document   : index
-    Created on : Aug 4, 2015, 11:11:17 AM
-    Author     : tuisk
---%>
-
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html" pageEncoding="UTF-8" trimDirectiveWhitespaces="true" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>login</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width">
+        <link href="css/bootstrap.css" rel="stylesheet">
+        <link href="css/bootstrap-theme.css" rel="stylesheet">
+        <link href="css/maincss.css" rel="stylesheet">
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <div class = "keskitys">
+            <h1>onnistu</h1>
+
+            <c:if test="${pageError != null}">
+                <div class="alert alert-danger">${pageError}</div>
+            </c:if>
+
+            <form action="Kirjautuminen" method="POST">
+                <div class="input-group input-group-lg">
+                    <span class="input-group-addon"></span>
+                    <input type="text" name="username" value="${kayttaja}" class="form-control" placeholder="Käyttäjänimi">
+                </div>
+                <div class="input-group input-group-lg">
+                    <span class="input-group-addon"></span>
+                    <input type="password" name="password" class="form-control" placeholder="*******">
+                </div>
+                <div class="btn-group">
+                    <button name="subject" type="submit" class="btn btn-default">onnistu</button>
+                </div>
+            </form>
+        </div>
     </body>
 </html>
