@@ -6,11 +6,23 @@
     </servlet>
     <servlet>
         <servlet-name>YhteysTesti</servlet-name>
-        <servlet-class>Servlets.YhteysTesti</servlet-class>
+        <servlet-class>Muistilista.Servlets.YhteysTesti</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>TulostaKayttajat</servlet-name>
-        <servlet-class>Servlets.TulostaKayttajat</servlet-class>
+        <servlet-class>Muistilista.Servlets.TulostaKayttajat</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>KOKEILU</servlet-name>
+        <servlet-class>Muistilista.Servlets.KOKEILU</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ToistuvaKoodi</servlet-name>
+        <servlet-class>Muistilista.Servlets.ToistuvaKoodi</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Kirjautuminen</servlet-name>
+        <servlet-class>Muistilista.Servlets.Kirjautuminen</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Kokeilu</servlet-name>
@@ -23,6 +35,18 @@
     <servlet-mapping>
         <servlet-name>TulostaKayttajat</servlet-name>
         <url-pattern>/TulostaKayttajat</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>KOKEILU</servlet-name>
+        <url-pattern>/KOKEILU</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ToistuvaKoodi</servlet-name>
+        <url-pattern>/ToistuvaKoodi</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Kirjautuminen</servlet-name>
+        <url-pattern>/Kirjautuminen</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

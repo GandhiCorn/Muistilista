@@ -1,12 +1,13 @@
-package Servlets;
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package Muistilista.Servlets;
 
-import Models.Kayttaja;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -14,9 +15,9 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author tuisk
+ * @author fuksi
  */
-public class TulostaKayttajat extends HttpServlet {
+public class ToistuvaKoodi extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -28,17 +29,17 @@ public class TulostaKayttajat extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, SQLException {
-        List<Kayttaja> kayttajat = Kayttaja.getKayttajat();
-        response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        try {
-            for (Kayttaja kayttaja : kayttajat) {
-                out.println("<li>" + kayttaja.getKayttajatunnus() + "</li>");
-            }
-        } finally {
-            out.close();
-        }
+            throws ServletException, IOException {
+    }
+
+    //pyydetään näyttämään JSP
+    protected void naytaJSP(String jsp, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        RequestDispatcher dispatcher = request.getRequestDispatcher(jsp);
+        dispatcher.forward(request, response);
+    }
+
+    protected void asetaVirhe(String virhe, HttpServletRequest request) {
+        request.setAttribute("pageError", virhe);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -53,11 +54,7 @@ public class TulostaKayttajat extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            processRequest(request, response);
-        } catch (SQLException ex) {
-            Logger.getLogger(TulostaKayttajat.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        processRequest(request, response);
     }
 
     /**
@@ -71,11 +68,7 @@ public class TulostaKayttajat extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            processRequest(request, response);
-        } catch (SQLException ex) {
-            Logger.getLogger(TulostaKayttajat.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        processRequest(request, response);
     }
 
     /**
