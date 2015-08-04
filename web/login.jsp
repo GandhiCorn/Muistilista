@@ -12,7 +12,7 @@
     </head>
     <body>
         <div class = "keskitys">
-            <h1>MUISTILISTA</h1>
+            <h1>Muistilistan kirjautuminen</h1>
 
             <c:if test="${pageError != null}">
                 <div class="alert alert-danger">${pageError}</div>

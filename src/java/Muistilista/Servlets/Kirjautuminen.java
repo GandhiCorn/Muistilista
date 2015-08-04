@@ -66,13 +66,13 @@ public class Kirjautuminen extends ToistuvaKoodi {
 
             //tarkistetaan onko käyttäjä olemassa ja välitetään eteenpäin tai annetaan virheilmoitus
             Kayttaja client = Kayttaja.etsiKayttajaTunnuksilla(kayttaja, salasana);
-            if (client == null) {   
+            if (client == null) {
                 asetaVirhe("Kirjautuminen epäonnistui! Käyttäjää ei löytynyt järjestelmästä", request);
                 naytaJSP("login.jsp", request, response);
             } else {
-                //HttpSession session = request.getSession();
-                //session.setAttribute("kirjautunut", kayttaja);
-                naytaJSP("index.jsp", request, response);
+                HttpSession session = request.getSession();
+                session.setAttribute("kirjautunut", client);
+                response.sendRedirect("Index");
             }
 
         } catch (NamingException ex) {
