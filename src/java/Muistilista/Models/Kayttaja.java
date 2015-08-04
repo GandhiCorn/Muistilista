@@ -67,15 +67,36 @@ public class Kayttaja {
         return kirjautunut;
     }
 
+    public static void luoUusiKayttaja(String kayttajanimi, String salasana) throws NamingException, SQLException {
+
+        String sql = " insert into kayttaja (kayttajanimi, salasana, adminstatus) values (?,?,?)";
+        Connection yhteys = Yhteys.getYhteys();
+        PreparedStatement kysely = yhteys.prepareStatement(sql);
+        kysely.setString(1, kayttajanimi);
+        kysely.setString(2, salasana);
+        kysely.setBoolean(3, false);
+
+        kysely.executeUpdate();
+
+        try {
+            kysely.close();
+        } catch (Exception e) {
+        }
+        try {
+            yhteys.close();
+        } catch (Exception e) {
+        }
+    }
+
     public static boolean etsiKayttaja(String kayttaja) throws NamingException, SQLException {
         String sql = "SELECT kayttajanimi from kayttaja where kayttajanimi = ?";
-        Connection yhteys = Tietokanta.getYhteys();
+        Connection yhteys = Yhteys.getYhteys();
         PreparedStatement kysely = yhteys.prepareStatement(sql);
         kysely.setString(1, kayttaja);
         ResultSet rs = kysely.executeQuery();
 
         //Alustetaan muuttuja, joka sisältää löydetyn käyttäjän
-        Client kirjautunut = null;
+        Kayttaja kirjautunut = null;
 
         //next-metodia on kutsuttava aina, kun käsitellään 
         //vasta kannasta saatuja ResultSet-olioita.
@@ -85,8 +106,24 @@ public class Kayttaja {
         if (rs.next()) {
             //Kutsutaan sopivat tiedot vastaanottavaa konstruktoria 
             //ja asetetaan palautettava olio:
-            kirjautunut = new Client();
+            kirjautunut = new Kayttaja();
         }
+
+        try {
+            rs.close();
+        } catch (Exception e) {
+        }
+        try {
+            kysely.close();
+        } catch (Exception e) {
+        }
+        try {
+            yhteys.close();
+        } catch (Exception e) {
+        }
+
+        //Käyttäjä palautetaan vasta täällä, kun resurssit on suljettu onnistuneesti.
+        return kirjautunut != null;
     }
 
     public static List<Kayttaja> getKayttajat() throws SQLException, NamingException {

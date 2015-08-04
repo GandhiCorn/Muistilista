@@ -1,24 +1,19 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Muistilista.Servlets;
+
 
 import Muistilista.Models.Kayttaja;
 import java.io.IOException;
-import javax.servlet.RequestDispatcher;
+import java.io.PrintWriter;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author fuksi
+ * @author Jyri
  */
-public class ToistuvaKoodi extends HttpServlet {
+public class Index extends ToistuvaKoodi {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -29,28 +24,24 @@ public class ToistuvaKoodi extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    @Override
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-    }
+        response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();
 
-    //pyydetään näyttämään JSP
-    protected void naytaJSP(String jsp, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        RequestDispatcher dispatcher = request.getRequestDispatcher(jsp);
-        dispatcher.forward(request, response);
-    }
+        if (tarkistaKirjautuminen(request)) {
 
-    protected void asetaVirhe(String virhe, HttpServletRequest request) {
-        request.setAttribute("pageError", virhe);
-    }
+            HttpSession session = request.getSession();
+            Kayttaja kirjautunut = (Kayttaja) session.getAttribute("kirjautunut");
 
-    protected boolean tarkistaKirjautuminen(HttpServletRequest request) {
-        HttpSession session = request.getSession();
-        Kayttaja kirjautunut = (Kayttaja) session.getAttribute("kirjautunut");
-        return kirjautunut != null;
+        } else {
+            asetaVirhe("NOT LOGGED IN", request);
+        }
+        naytaJSP("index.jsp", request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-
     /**
      * Handles the HTTP <code>GET</code> method.
      *
