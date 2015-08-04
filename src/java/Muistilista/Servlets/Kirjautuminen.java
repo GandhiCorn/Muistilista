@@ -37,7 +37,7 @@ public class Kirjautuminen extends ToistuvaKoodi {
             throws ServletException, IOException {
         try {
             response.setContentType("text/html;charset=UTF-8");
-
+            
             String salasana = request.getParameter("password");
             String kayttaja = request.getParameter("username");
             String nappi = request.getParameter("subject");
@@ -68,15 +68,15 @@ public class Kirjautuminen extends ToistuvaKoodi {
 
                 Kayttaja client = Kayttaja.etsiKayttajaTunnuksilla(kayttaja, salasana);
 
-                if (kayttaja == null) {
+                if (client == null) {
                     asetaVirhe("Kirjautuminen epäonnistui! Käyttäjää ei löytynyt järjestelmästä", request);
-                    naytaJSP("Login.jsp", request, response);
+                    naytaJSP("login.jsp", request, response);
                     return;
                 } else {
                     //Tallennetaan istuntoon käyttäjäolio                
                     session.setAttribute("kirjautunut", kayttaja);
                     //Uudelleenohjaus
-                    response.sendRedirect("IndexServlet");
+                    response.sendRedirect("Index");
                     return;
                 }
 
@@ -84,19 +84,13 @@ public class Kirjautuminen extends ToistuvaKoodi {
             } else if (nappi.equals("newuser")) {
                 /* Näytetään pelkkä lomake */
                 if (kayttaja == null || salasana == null) {
-                    naytaJSP("Login.jsp", request, response);
+                    naytaJSP("login.jsp", request, response);
                     return;
                 }
 
                 if (kayttaja.equals("")) {
                     asetaVirhe("Uuden käyttäjän luonti epäonnistui! Et antanut käyttäjätunnusta.", request);
-                    naytaJSP("Login.jsp", request, response);
-                    return;
-                }
-
-                if (kayttaja.length() > 20) {
-                    asetaVirhe("Uuden käyttäjän luonti epäonnistui! Käyttäjätunnuksen maksimipituus on 20 merkkiä", request);
-                    naytaJSP("Login.jsp", request, response);
+                    naytaJSP("login.jsp", request, response);
                     return;
                 }
 
@@ -105,29 +99,23 @@ public class Kirjautuminen extends ToistuvaKoodi {
 
                 if (salasana.equals("")) {
                     asetaVirhe("Uuden käyttäjän luonti epäonnistui! Et antanut salasanaa.", request);
-                    naytaJSP("Login.jsp", request, response);
-                    return;
-                }
-
-                if (salasana.length() > 128) {
-                    asetaVirhe("Uuden käyttäjän luonti epäonnistui! Salasanan maksimipituus on 128 merkkiä.", request);
-                    naytaJSP("Login.jsp", request, response);
+                    naytaJSP("login.jsp", request, response);
                     return;
                 }
 
                 /* Tarkistetaan onko parametrina saatu oikeat tunnukset */
-                
-                boolean kayttajaLoytyyJo = Kayttaja.etsiKayttaja(kayttaja);
-                if (kayttajaLoytyyJo) {
-                    asetaVirhe("Käyttäjänimi on varattu. Kokeile toista.", request);
-                    naytaJSP("Login.jsp", request, response);
-                    return;
-                } else {
-                    Kayttaja.luoUusiKayttaja(kayttaja, salasana);
-                    asetaVirhe("Käyttäjä luotu onnistuneesti. Voit nyt kirjautua sisään.", request);
-                    naytaJSP("Login.jsp", request, response);
-                    return;
-                }
+                /*
+                 boolean kayttajaLoytyyJo = Kayttaja.etsiKayttaja(kayttaja);
+                 if (kayttajaLoytyyJo) {
+                 asetaVirhe("Käyttäjänimi on varattu. Kokeile toista.", request);
+                 naytaJSP("login.jsp", request, response);
+                 return;
+                 } else {
+                 Kayttaja.luoUusiKayttaja(kayttaja, salasana);
+                 asetaVirhe("Käyttäjä luotu onnistuneesti. Voit nyt kirjautua sisään.", request);
+                 naytaJSP("login.jsp", request, response);
+                 return;
+                 }*/
             }
         } catch (NamingException ex) {
             Logger.getLogger(Kirjautuminen.class.getName()).log(Level.SEVERE, null, ex);
