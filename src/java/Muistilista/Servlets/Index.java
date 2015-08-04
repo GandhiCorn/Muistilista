@@ -36,7 +36,7 @@ public class Index extends ToistuvaKoodi {
             Kayttaja kirjautunut = (Kayttaja) session.getAttribute("kirjautunut");
 
         } else {
-            asetaVirhe("NOT LOGGED IN", request);
+            asetaVirhe("Kirjautumista ei tunnisteta", request);
         }
         naytaJSP("index.jsp", request, response);
     }

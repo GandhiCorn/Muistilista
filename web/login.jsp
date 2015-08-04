@@ -18,7 +18,7 @@
                 <div class="alert alert-danger">${pageError}</div>
             </c:if>
 
-            <form action="ClientServlet" method="POST">
+            <form action="Kirjautuminen" method="POST">
                 <div class="input-group input-group-lg">
                     <span class="input-group-addon"></span>
                     <input type="text" name="username" value="${kayttaja}" class="form-control" placeholder="Käyttäjänimi">
@@ -28,8 +28,7 @@
                     <input type="password" name="password" class="form-control" placeholder="*******">
                 </div>
                 <div class="btn-group">
-                    <button name="subject" type="submit" value="login" class="btn btn-default">Kirjaudu</button>
-                    <button name="subject" type="submit" value="newuser" class="btn btn-default">Luo uusi käyttäjä</button>
+                    <button name="subject" type="submit" class="btn btn-default">Kirjaudu</button>
                 </div>
             </form>
         </div>

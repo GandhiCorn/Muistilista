@@ -49,6 +49,11 @@ public class ToistuvaKoodi extends HttpServlet {
         return kirjautunut != null;
     }
 
+    protected void kirjauduUlos(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        session.removeAttribute("kirjautunut");
+    }
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
 
     /**

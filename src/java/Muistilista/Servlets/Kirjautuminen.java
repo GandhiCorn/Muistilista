@@ -37,86 +37,44 @@ public class Kirjautuminen extends ToistuvaKoodi {
             throws ServletException, IOException {
         try {
             response.setContentType("text/html;charset=UTF-8");
-            
+
             String salasana = request.getParameter("password");
             String kayttaja = request.getParameter("username");
             String nappi = request.getParameter("subject");
 
-            if (nappi == null || nappi.equals("login")) {
-                /* Näytetään pelkkä lomake */
-                if (kayttaja == null || salasana == null) {
-                    naytaJSP("login.jsp", request, response);
-                    return;
-                }
-
-                //Tarkistetaan että vaaditut kentät on täytetty:
-                if (kayttaja == null || kayttaja.equals("")) {
-                    asetaVirhe("Kirjautuminen epäonnistui! Et antanut käyttäjätunnusta.", request);
-                    naytaJSP("login.jsp", request, response);
-                    return;
-                }
-
-                /* Välitetään näkymille tieto siitä, mikä tunnus yritti kirjautumista */
-                request.setAttribute("kayttaja", kayttaja);
-
-                if (salasana == null || salasana.equals("")) {
-                    asetaVirhe("Kirjautuminen epäonnistui! Et antanut salasanaa.", request);
-                    naytaJSP("login.jsp", request, response);
-                    return;
-                }
-                HttpSession session = request.getSession();
-
-                Kayttaja client = Kayttaja.etsiKayttajaTunnuksilla(kayttaja, salasana);
-
-                if (client == null) {
-                    asetaVirhe("Kirjautuminen epäonnistui! Käyttäjää ei löytynyt järjestelmästä", request);
-                    naytaJSP("login.jsp", request, response);
-                    return;
-                } else {
-                    //Tallennetaan istuntoon käyttäjäolio                
-                    session.setAttribute("kirjautunut", kayttaja);
-                    //Uudelleenohjaus
-                    response.sendRedirect("Index");
-                    return;
-                }
-
-                //Uuden käyttäjän luonti
-            } else if (nappi.equals("newuser")) {
-                /* Näytetään pelkkä lomake */
-                if (kayttaja == null || salasana == null) {
-                    naytaJSP("login.jsp", request, response);
-                    return;
-                }
-
-                if (kayttaja.equals("")) {
-                    asetaVirhe("Uuden käyttäjän luonti epäonnistui! Et antanut käyttäjätunnusta.", request);
-                    naytaJSP("login.jsp", request, response);
-                    return;
-                }
-
-                /* Välitetään näkymille tieto siitä, mikä tunnus yritti kirjautumista */
-                request.setAttribute("kayttaja", kayttaja);
-
-                if (salasana.equals("")) {
-                    asetaVirhe("Uuden käyttäjän luonti epäonnistui! Et antanut salasanaa.", request);
-                    naytaJSP("login.jsp", request, response);
-                    return;
-                }
-
-                /* Tarkistetaan onko parametrina saatu oikeat tunnukset */
-                /*
-                 boolean kayttajaLoytyyJo = Kayttaja.etsiKayttaja(kayttaja);
-                 if (kayttajaLoytyyJo) {
-                 asetaVirhe("Käyttäjänimi on varattu. Kokeile toista.", request);
-                 naytaJSP("login.jsp", request, response);
-                 return;
-                 } else {
-                 Kayttaja.luoUusiKayttaja(kayttaja, salasana);
-                 asetaVirhe("Käyttäjä luotu onnistuneesti. Voit nyt kirjautua sisään.", request);
-                 naytaJSP("login.jsp", request, response);
-                 return;
-                 }*/
+            //pelkkä lomake
+            if (kayttaja == null || salasana == null) {
+                naytaJSP("login.jsp", request, response);
+                return;
             }
+
+            //ei käyttäjätunnusta
+            if (kayttaja == null || kayttaja.equals("")) {
+                asetaVirhe("Kirjautuminen epäonnistui! Et antanut käyttäjätunnusta.", request);
+                naytaJSP("login.jsp", request, response);
+                return;
+            }
+
+            //kerrotaan käyttäjätunnus ettei jää tyhjäksi kerran kun on jotain laitettu
+            request.setAttribute("kayttaja", kayttaja);
+            //ei salasanaa
+            if (salasana == null || salasana.equals("")) {
+                asetaVirhe("Kirjautuminen epäonnistui! Et antanut salasanaa.", request);
+                naytaJSP("login.jsp", request, response);
+                return;
+            }
+
+            //tarkistetaan onko käyttäjä olemassa ja välitetään eteenpäin tai annetaan virheilmoitus
+            Kayttaja client = Kayttaja.etsiKayttajaTunnuksilla(kayttaja, salasana);
+            if (client == null) {
+                asetaVirhe("Kirjautuminen epäonnistui! Käyttäjää ei löytynyt järjestelmästä", request);
+                naytaJSP("login.jsp", request, response);
+            } else {
+                HttpSession session = request.getSession();
+                session.setAttribute("kirjautunut", kayttaja);
+                response.sendRedirect("Index");
+            }
+
         } catch (NamingException ex) {
             Logger.getLogger(Kirjautuminen.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
