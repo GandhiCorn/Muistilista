@@ -29,8 +29,13 @@
         <servlet-class>Muistilista.Servlets.Index</servlet-class>
     </servlet>
     <servlet>
+<<<<<<< HEAD
         <servlet-name>NewServlet</servlet-name>
         <servlet-class>Muistilista.Servlets.NewServlet</servlet-class>
+=======
+        <servlet-name>testi</servlet-name>
+        <servlet-class>Muistilista.Servlets.testi</servlet-class>
+>>>>>>> f1d84ed2984ace09ea76a6285a395ce791f2e25e
     </servlet>
     <servlet-mapping>
         <servlet-name>Kokeilu</servlet-name>
@@ -61,8 +66,13 @@
         <url-pattern>/Index</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+<<<<<<< HEAD
         <servlet-name>NewServlet</servlet-name>
         <url-pattern>/NewServlet</url-pattern>
+=======
+        <servlet-name>testi</servlet-name>
+        <url-pattern>/testi</url-pattern>
+>>>>>>> f1d84ed2984ace09ea76a6285a395ce791f2e25e
     </servlet-mapping>
     <session-config>
         <session-timeout>
