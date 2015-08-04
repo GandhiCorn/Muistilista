@@ -1,26 +1,19 @@
 package Muistilista.Servlets;
 
 
-import Muistilista.Models.Tietokanta;
+import Muistilista.Models.Kayttaja;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.naming.NamingException;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author Jyri
  */
-public class testi extends HttpServlet {
+public class Index extends ToistuvaKoodi {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -31,45 +24,24 @@ public class testi extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    //HttpServlet-luokan perivään servlettiin menevä metodi:
+    @Override
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            Connection yhteys = Tietokanta.getYhteys(); //Haetaan tietokantaluokalta yhteysolio
-            PreparedStatement kysely = null;
-            ResultSet tulokset = null;
-            PrintWriter out = response.getWriter();
-            response.setContentType("text/plain;charset=UTF-8");
+        response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();
 
-            try {
-                //Alustetaan muuttuja jossa on Select-kysely, joka palauttaa lukuarvon:
-                String sqlkysely = "SELECT 1+1 as two";
+        if (tarkistaKirjautuminen(request)) {
 
-                kysely = yhteys.prepareStatement(sqlkysely);
-                tulokset = kysely.executeQuery();
-                if (tulokset.next()) {
-                    //Tuloksen arvoksi pitäisi tulla numero kaksi.
-                    int tulos = tulokset.getInt("two");
-                    out.println("Tulos: " + tulos
-                    );
-                } else {
-                    out.println("Virhe!");
-                }
-            } catch (Exception e) {
-                out.println("Virhe: " + e.getMessage()
-                );
-            }
+            HttpSession session = request.getSession();
+            Kayttaja kirjautunut = (Kayttaja) session.getAttribute("kirjautunut");
 
-            tulokset.close();
-            kysely.close();
-        } catch (NamingException ex) {
-            Logger.getLogger(testi.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(testi.class.getName()).log(Level.SEVERE, null, ex);
+        } else {
+            asetaVirhe("Kirjautumista ei tunnisteta", request);
         }
+        naytaJSP("index.jsp", request, response);
     }
 
-// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *

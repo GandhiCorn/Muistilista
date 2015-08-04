@@ -31,7 +31,7 @@ public class Kayttaja {
     }
 
     public static Kayttaja etsiKayttajaTunnuksilla(String kayttaja, String salasana) throws NamingException, SQLException {
-        String sql = "SELECT Kayttajaid, Kayttajatunnus, Salasana from Kayttaja where kayttajatunnus = ? AND salasana = ?";
+        String sql = "SELECT kayttajaId, kayttajatunnus, salasana from kayttaja where kayttajatunnus = ? AND salasana = ?";
         Connection yhteys = Tietokanta.getYhteys();
         PreparedStatement kysely = yhteys.prepareStatement(sql);
         kysely.setString(1, kayttaja);

@@ -72,8 +72,7 @@ public class Kirjautuminen extends ToistuvaKoodi {
             } else {
                 //HttpSession session = request.getSession();
                 //session.setAttribute("kirjautunut", kayttaja);
-                naytaJSP("index.jsp", request, response);
-
+                response.sendRedirect("Index");
             }
 
         } catch (NamingException ex) {
