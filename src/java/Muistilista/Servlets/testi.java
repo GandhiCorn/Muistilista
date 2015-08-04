@@ -1,7 +1,7 @@
 package Muistilista.Servlets;
 
 
-import Muistilista.Models.Tietokanta;
+import Muistilista.Models.Yhteys;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -35,7 +35,7 @@ public class testi extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            Connection yhteys = Tietokanta.getYhteys(); //Haetaan tietokantaluokalta yhteysolio
+            Connection yhteys = Yhteys.getYhteys(); //Haetaan tietokantaluokalta yhteysolio
             PreparedStatement kysely = null;
             ResultSet tulokset = null;
             PrintWriter out = response.getWriter();
