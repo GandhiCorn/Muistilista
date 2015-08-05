@@ -11,26 +11,8 @@
         <link href="css/maincss.css" rel="stylesheet">
     </head>
     <body>
-        <div class = "keskitys">
-            <h1>onnistu</h1>
-
-            <c:if test="${pageError != null}">
-                <div class="alert alert-danger">${pageError}</div>
-            </c:if>
-
-            <form action="Kirjautuminen" method="POST">
-                <div class="input-group input-group-lg">
-                    <span class="input-group-addon"></span>
-                    <input type="text" name="username" value="${kayttaja}" class="form-control" placeholder="Käyttäjänimi">
-                </div>
-                <div class="input-group input-group-lg">
-                    <span class="input-group-addon"></span>
-                    <input type="password" name="password" class="form-control" placeholder="*******">
-                </div>
-                <div class="btn-group">
-                    <button name="subject" type="submit" class="btn btn-default">onnistu</button>
-                </div>
-            </form>
+        <div>
+            <h1>Kirjautuminen onnistui!</h1>
         </div>
     </body>
 </html>
