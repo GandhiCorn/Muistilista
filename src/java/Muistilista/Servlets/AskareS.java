@@ -52,7 +52,7 @@ public class AskareS extends ToistuvaKoodi {
                 Askare askare = askareet.get(0);
                 if (!askare.getKayttaja().equals(tarkistaKayttajanimi(request))) {
                     asetaVirhe("Tämä askare ei kuulu sinun käyttäjälle", request);
-                    naytaJSP("Askare.jsp", request, response);
+                    naytaJSP("login.jsp", request, response);
                     lopeta = true;
                 }
 
@@ -63,12 +63,12 @@ public class AskareS extends ToistuvaKoodi {
             }
             if (!lopeta) {
                 request.setAttribute("askareet", askareet);
-                naytaJSP("Askare.jsp", request, response);
+                naytaJSP("login.jsp", request, response);
             }
 
         } else {
             asetaVirhe("NOT LOGGED IN", request);
-            naytaJSP("Index.jsp", request, response);
+            naytaJSP("index.jsp", request, response);
         }
     }
 
