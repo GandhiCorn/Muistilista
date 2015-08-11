@@ -19,7 +19,8 @@
                 <c:forEach var="askare" items="${askareet}"> 
                     <tr>
                         <td><a href="AskareS?id=${askare.askareenId}"><c:out value="${askare.nimi}"/></a></td>
-                        <td><c:out value="${askare.luokkaid}"/></td>
+                        <td><c:out value="${askare.tarkeys}"/></td>                        
+                        <td><c:out value="${askare.luokkaId}"/></td>
                     </tr>
                 </c:forEach>
             </tbody>
