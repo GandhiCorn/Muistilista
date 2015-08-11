@@ -40,6 +40,10 @@
         <servlet-name>getKayttajat</servlet-name>
         <servlet-class>Muistilista.Servlets.getKayttajat</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Askare</servlet-name>
+        <servlet-class>Muistilista.Servlets.AskareS</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Kokeilu</servlet-name>
         <url-pattern>/Kokeilu</url-pattern>
@@ -79,6 +83,10 @@
     <servlet-mapping>
         <servlet-name>getKayttajat</servlet-name>
         <url-pattern>/getKayttajat</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Askare</servlet-name>
+        <url-pattern>/Askare</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

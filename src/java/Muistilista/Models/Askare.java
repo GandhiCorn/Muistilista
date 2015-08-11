@@ -5,6 +5,7 @@
  */
 package Muistilista.Models;
 
+import Muistilista.Servlets.AskareS;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,6 +19,7 @@ import javax.naming.NamingException;
  * @author fuksi
  */
 public class Askare {
+
 
     private String nimi;
     private int tarkeys;
@@ -39,6 +41,57 @@ public class Askare {
         this.nimi = nimi;
         this.tarkeys = tarkeys;
         this.kayttaja = kayttaja;
+    }
+    
+        public static List<Askare> etsiAskare(int id) throws NamingException, SQLException {
+
+        String sql = "select askareenid, tarkeysarvo, nimi, kayttaja, luokkaid from askare where askareenid = ?";
+        Connection yhteys = Yhteys.getYhteys();
+        PreparedStatement kysely = yhteys.prepareStatement(sql);
+        kysely.setInt(1, id);
+        ResultSet rs = kysely.executeQuery();
+
+        //Alustetaan muuttuja, joka sisältää löydetyn askareen
+        Askare loydettyAskare = null;
+
+        List<Askare> askareet = new ArrayList<Askare>();
+
+        //next-metodia on kutsuttava aina, kun käsitellään 
+        //vasta kannasta saatuja ResultSet-olioita.
+        //ResultSet on oletuksena ensimmäistä edeltävällä -1:llä rivillä.
+        //Kun sitä kutsuu ensimmäisen kerran siirtyy se ensimmäiselle riville 0.
+        //Samalla metodi myös palauttaa tiedon siitä onko seuraavaa riviä olemassa.
+        while (rs.next()) {
+            //Kutsutaan sopivat tiedot vastaanottavaa konstruktoria 
+            //ja asetetaan palautettava olio:
+            loydettyAskare = new Askare();
+            loydettyAskare.setAskareenId((Integer) rs.getObject("askareenid"));
+            loydettyAskare.setTarkeys((Integer) rs.getObject("tarkeysarvo"));
+            loydettyAskare.setNimi(rs.getString("nimi"));
+            loydettyAskare.setKayttaja(rs.getString("kayttaja"));         
+            loydettyAskare.setLuokkaId((Integer) rs.getObject("luokkaid"));
+
+            askareet.add(loydettyAskare);
+
+        }
+
+        //Jos kysely ei tuottanut tuloksia käyttäjä on nyt vielä null.
+        //Suljetaan kaikki resurssit:
+        try {
+            rs.close();
+        } catch (Exception e) {
+        }
+        try {
+            kysely.close();
+        } catch (Exception e) {
+        }
+        try {
+            yhteys.close();
+        } catch (Exception e) {
+        }
+
+        return askareet;
+
     }
 
     public static List<Askare> etsiAskareet(String kayttaja) throws NamingException, SQLException {

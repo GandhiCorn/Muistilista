@@ -1,24 +1,23 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Muistilista.Servlets;
 
-import Muistilista.Models.Kayttaja;
+import Muistilista.Models.*;
 import java.io.IOException;
-import javax.servlet.RequestDispatcher;
+import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author fuksi
+ * @author tuisk
  */
-public class ToistuvaKoodi extends HttpServlet {
+public class AskareS extends ToistuvaKoodi {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -31,36 +30,49 @@ public class ToistuvaKoodi extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+
+        String askareID = request.getParameter("id");
+        int id;
+        try {
+            id = Integer.parseInt(askareID);
+        } catch (Exception e) {
+            id = -1;
+        }
+        if (tarkistaKirjautuminen(request)) {
+
+            //Haetaan askareen tarkat tiedot
+            request.setAttribute("test", id);
+            List<Askare> askareet = null;
+
+            boolean lopeta = false;
+            try {
+                askareet = Askare.etsiAskare(id);
+                Askare askare = askareet.get(0);
+                if (!askare.getKayttaja().equals(tarkistaKayttajanimi(request))) {
+                    asetaVirhe("Tämä askare ei kuulu sinun käyttäjälle", request);
+                    naytaJSP("Askare.jsp", request, response);
+                    lopeta = true;
+                }
+
+            } catch (NamingException ex) {
+                Logger.getLogger(AskareS.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(AskareS.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            if (!lopeta) {
+                request.setAttribute("askareet", askareet);
+                naytaJSP("Askare.jsp", request, response);
+            }
+
+        } else {
+            asetaVirhe("NOT LOGGED IN", request);
+            naytaJSP("Index.jsp", request, response);
+        }
     }
 
-    //pyydetään näyttämään JSP
-    protected void naytaJSP(String jsp, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        RequestDispatcher dispatcher = request.getRequestDispatcher(jsp);
-        dispatcher.forward(request, response);
-    }
-
-    protected void asetaVirhe(String virhe, HttpServletRequest request) {
-        request.setAttribute("pageError", virhe);
-    }
-
-    protected boolean tarkistaKirjautuminen(HttpServletRequest request) {
-        HttpSession session = request.getSession();
-        Kayttaja kirjautunut = (Kayttaja) session.getAttribute("kirjautunut");
-        return kirjautunut != null;
-    }
-
-    protected String tarkistaKayttajanimi(HttpServletRequest request) {
-        HttpSession session = request.getSession();
-        Kayttaja kirjautunut = (Kayttaja) session.getAttribute("kirjautunut");
-        return kirjautunut.getKayttajatunnus();
-    }
-
-    protected void kirjauduUlos(HttpServletRequest request) {
-        HttpSession session = request.getSession();
-        session.removeAttribute("kirjautunut");
-    }
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
