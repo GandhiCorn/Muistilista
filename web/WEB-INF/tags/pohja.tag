@@ -1,65 +1,40 @@
 <%-- 
     Document   : pohja
-    Created on : 03-Aug-2015, 16:27:13
-    Author     : fuksi
+    Created on : Sep 21, 2014, 1:10:08 AM
+    Author     : Jyri
 --%>
-
-<%@tag description="put the tag description here" pageEncoding="UTF-8" trimDirectiveWhitespaces = "true" %>
-
-<%-- The list of normal or fragment attributes can be specified here: --%>
-<%@attribute name="message"%>
+<%@tag description="Esimerkistä muokattu pohja muistilistalle" pageEncoding="UTF-8" trimDirectiveWhitespaces="true" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@attribute name="pageTitle"%>
 <!DOCTYPE html>
 <html>
     <head>
-        <link href="../css/bootstrap.css" rel="stylesheet">
-        <link href="../css/bootstrap-theme.css" rel="stylesheet">
-        <link href="../css/main.css" rel="stylesheet">
-        <title></title>
+        <title>${pageTitle}</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link href="css/bootstrap.css" rel="stylesheet">
+        <link href="css/bootstrap-theme.css" rel="stylesheet">
+        <link href="css/maincss.css" rel="stylesheet">        
     </head>
-
     <body>
-        <ul class="nav nav-tabs">
-            <li class="active"><a href="etusivu.html">Etusivu</a></li>
-            <li><a href="luokat.html">Luokat</a></li>
-            <li><a href="kirjautuminen.html">Kirjaudu ulos</a></li>
-        </ul>
-        <div class="container">
+        <div class="ylapalkki">
             <h1>Muistilista</h1>
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Askare</th>
-                        <th>Luokka</th>
-                        <th></th>
+        </div>
+        <ul class="nav nav-tabs" role="tablist">
+            <li><a href="IndexServlet">Etusivu</a></li>
+            <li><a href="AskareSearch">Tarkka Haku</a></li>            
+            <li><a href="ClassServlet">Hallinnoi luokkia</a></li>
+            <li><a href="Logout">Kirjaudu ulos</a></li>
+        </ul>
 
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Imuroi</td>
-                        <td>Koti</td>
-                        <td>1</td>
+        <div class="container">
+            <c:if test="${pageError == 'Kirjautumista ei tunnisteta'}">
+                <c:redirect url="login.jsp"/>
+            </c:if>
 
-                        <td><a href="luokkatietosivu.html"<button type="submit" class="btn btn-xs btn-default"><span class="col-md-offset-0 col-md-1"></span> Muokkaa</button></a></td>     
-                    </tr>
-                    <tr>
-                        <td>Käy kaupassa</td>
-                        <td>Koti</td>
-                        <td>2</td>
-
-                        <td><a href="luokkatietosivu.html"<button type="submit" class="btn btn-xs btn-default"><span class="col-md-offset-0 col-md-1"></span> Muokkaa</button></a></td>
-                    </tr>
-                    <tr>
-                        <td>Lenkille</td>
-                        <td>Harrastukset</td> 
-                        <td>2</td>
-
-                        <td><a href="luokkatietosivu.html"<button type="submit" class="btn btn-xs btn-default"><span class="col-md-offset-0 col-md-1"></span> Muokkaa</button></a></td>
-                    </tr>
-                </tbody>
-            </table>
+            <c:if test="${pageError != null}">
+                <div class="alert alert-danger">${pageError}</div>
+            </c:if>
+            <jsp:doBody/>
         </div>
     </body>
-
 </html>

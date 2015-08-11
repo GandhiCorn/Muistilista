@@ -1,18 +1,44 @@
-<%@page contentType="text/html" pageEncoding="UTF-8" trimDirectiveWhitespaces="true" %>
+
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>login</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width">
-        <link href="css/bootstrap.css" rel="stylesheet">
-        <link href="css/bootstrap-theme.css" rel="stylesheet">
-        <link href="css/maincss.css" rel="stylesheet">
-    </head>
-    <body>
-        <div>
-            <h1>Kirjautuminen onnistui!</h1>
-        </div>
-    </body>
-</html>
+<%@page contentType="text/html" pageEncoding="UTF-8" trimDirectiveWhitespaces="true" %>
+<%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
+<t:pohja pageTitle="Muistilista"> 
+    <h1>Tervetuloa ${kayttaja}, sinulla on ${listanKoko} tehtävää.</h1>  
+
+
+    <div class="bs-example">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Askare</th>
+                    <th>Tarkeys</th>
+                    <th>Luokka</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <c:forEach var="askare" items="${askareet}"> 
+                    <tr>
+                        <td><a href="AskareServlet?id=${askare.id}"><c:out value="${askare.nimi}"/></a></td>
+                        <!--<td><c:out value="${askare.nimi}"/></td>-->
+                        <td><c:out value="${askare.tarkeys}"/></td>                        
+                        <td><c:out value="${askare.luokkaid}"/></td>
+                        <td><a href="AskareServlet?id=${askare.id}&poista=1"><c:out value="POISTA"/></a></td>
+                    </tr>
+                </c:forEach>
+
+
+
+
+            </tbody>
+        </table>
+        <form action="NewAskareServlet?id=-1" method="POST">
+            <button type="submit" class="btn btn-default">Luo uusi askare</button>
+        </form>
+    </div>
+
+
+
+
+
+</t:pohja>
