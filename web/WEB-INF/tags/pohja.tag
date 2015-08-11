@@ -20,8 +20,7 @@
             <h1>Muistilista</h1>
         </div>
         <ul class="nav nav-tabs" role="tablist">
-            <li><a href="IndexServlet">Etusivu</a></li>
-            <li><a href="AskareSearch">Tarkka Haku</a></li>            
+            <li><a href="IndexServlet">Etusivu</a></li>           
             <li><a href="ClassServlet">Hallinnoi luokkia</a></li>
             <li><a href="Logout">Kirjaudu ulos</a></li>
         </ul>

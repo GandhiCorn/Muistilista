@@ -40,7 +40,6 @@ public class Kirjautuminen extends ToistuvaKoodi {
 
             String salasana = request.getParameter("password");
             String kayttaja = request.getParameter("username");
-            String nappi = request.getParameter("subject");
 
             //pelkkä lomake
             if (kayttaja == null || salasana == null) {
@@ -65,12 +64,13 @@ public class Kirjautuminen extends ToistuvaKoodi {
             }
 
             //tarkistetaan onko käyttäjä olemassa ja välitetään eteenpäin tai annetaan virheilmoitus
+            HttpSession session = request.getSession();
             Kayttaja client = Kayttaja.etsiKayttajaTunnuksilla(kayttaja, salasana);
             if (client == null) {
                 asetaVirhe("Kirjautuminen epäonnistui! Käyttäjää ei löytynyt järjestelmästä", request);
                 naytaJSP("login.jsp", request, response);
             } else {
-                HttpSession session = request.getSession();
+                
                 session.setAttribute("kirjautunut", client);
                 response.sendRedirect("Index");
             }

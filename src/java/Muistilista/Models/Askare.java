@@ -38,7 +38,7 @@ public class Askare {
 
     public static List<Askare> etsiAskareet(String kayttaja) throws NamingException, SQLException {
 
-        String sql = "select nimi, tarkeysArvo, kayttaja, luokkaId, askareenId from askare where kayttaja = ?";
+        String sql = "select kayttaja, nimi, tarkeysArvo, luokkaid, askareenid from askare where kayttaja = ?";
         Connection yhteys = Yhteys.getYhteys();
         PreparedStatement kysely = yhteys.prepareStatement(sql);
         kysely.setString(1, kayttaja);
