@@ -31,7 +31,6 @@ public class Askare {
         this.nimi = null;
         this.tarkeys = -1;
         this.kayttaja = null;
-
     }
 
     public Askare(int askareenId, String nimi, int tarkeys, int luokkaId, String kayttaja) {
@@ -44,11 +43,10 @@ public class Askare {
 
     public static List<Askare> etsiAskareet(String kayttaja) throws NamingException, SQLException {
 
-        String sql = "select kayttaja, nimi, tarkeysArvo, luokkaid, askareenid from askare where kayttaja = ?";
+        String sql = "select kayttaja, nimi, tarkeysarvo, luokkaid, askareenid from askare where kayttaja = ?";
         Connection yhteys = Yhteys.getYhteys();
         PreparedStatement kysely = yhteys.prepareStatement(sql);
         kysely.setString(1, kayttaja);
-
         ResultSet rs = kysely.executeQuery();
 
         //Alustetaan muuttuja, joka sisältää löydetyn askareen
@@ -66,10 +64,10 @@ public class Askare {
             //ja asetetaan palautettava olio:
             loydettyAskare = new Askare();
             loydettyAskare.setNimi(rs.getString("nimi"));
-            loydettyAskare.setTarkeys((Integer) rs.getObject("tarkeysArvo"));
+            loydettyAskare.setTarkeys((Integer) rs.getObject("tarkeysarvo"));
             loydettyAskare.setKayttaja(rs.getString("kayttaja"));
-            loydettyAskare.setAskareenId((Integer) rs.getObject("askareenId"));
-            loydettyAskare.setLuokkaId((Integer) rs.getObject("luokkaId"));
+            loydettyAskare.setAskareenId((Integer) rs.getObject("askareenid"));
+            loydettyAskare.setLuokkaId((Integer) rs.getObject("luokkaid"));
 
             askareet.add(loydettyAskare);
 

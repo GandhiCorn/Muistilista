@@ -1,9 +1,14 @@
 package Muistilista.Servlets;
 
-
+import Muistilista.Models.Askare;
 import Muistilista.Models.Kayttaja;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -32,9 +37,21 @@ public class Index extends ToistuvaKoodi {
 
         if (tarkistaKirjautuminen(request)) {
 
-            HttpSession session = request.getSession();
-            Kayttaja kirjautunut = (Kayttaja) session.getAttribute("kirjautunut");
+            try {
+                HttpSession session = request.getSession();
+                Kayttaja kirjautunut = (Kayttaja) session.getAttribute("kirjautunut");
 
+                request.setAttribute("kayttaja", kirjautunut.getKayttajatunnus());
+
+                List<Askare> askareet = Askare.etsiAskareet(kirjautunut.getKayttajatunnus());
+                request.setAttribute("askareet", askareet);
+                request.setAttribute("listanKoko", askareet.size());
+
+            } catch (NamingException ex) {
+                Logger.getLogger(Index.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(Index.class.getName()).log(Level.SEVERE, null, ex);
+            }
         } else {
             asetaVirhe("Kirjautumista ei tunnisteta", request);
         }

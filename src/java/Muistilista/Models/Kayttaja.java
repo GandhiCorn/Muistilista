@@ -13,9 +13,10 @@ public class Kayttaja {
 
     private String kayttajatunnus;
     private String salasana;
-    private int kayttajaId;
 
     public Kayttaja() {
+        this.kayttajatunnus = null;
+        this.salasana = null;
     }
 
     public Kayttaja(String kayttajatunnus, String salasana) {
@@ -23,12 +24,6 @@ public class Kayttaja {
         this.salasana = salasana;
     }
 
-    public Kayttaja(String kayttajatunnus, String salasana, int kayttajaId) {
-        this.kayttajatunnus = kayttajatunnus;
-        this.salasana = salasana;
-        this.kayttajaId = kayttajaId;
-
-    }
 
     public static Kayttaja etsiKayttajaTunnuksilla(String kayttaja, String salasana) throws NamingException, SQLException {
         String sql = "SELECT kayttajatunnus, salasana from kayttaja where kayttajatunnus = ? AND salasana = ?";
@@ -66,7 +61,7 @@ public class Kayttaja {
     }
 
     public static List<Kayttaja> getKayttajat() throws NamingException, SQLException {
-        String sql = "SELECT kayttajaid, kayttajatunnus, salasana from kayttaja";
+        String sql = "SELECT kayttajatunnus, salasana from kayttaja";
         Connection yhteys = Yhteys.getYhteys();
         PreparedStatement kysely = yhteys.prepareStatement(sql);
         ResultSet tulokset = kysely.executeQuery();
@@ -75,7 +70,6 @@ public class Kayttaja {
         while (tulokset.next()) {
             //Luodaan tuloksia vastaava olio ja palautetaan olio:
             Kayttaja k = new Kayttaja();
-            k.setKayttajaId(tulokset.getInt("kayttajaid"));
             k.setKayttajatunnus(tulokset.getString("kayttajatunnus"));
             k.setSalasana(tulokset.getString("salasana"));
 
@@ -99,16 +93,13 @@ public class Kayttaja {
     }
 
     public String getKayttajatunnus() {
-        return kayttajatunnus;
+        return this.kayttajatunnus;
     }
 
     public String getSalasana() {
-        return salasana;
+        return this.salasana;
     }
 
-    public int getKid() {
-        return kayttajaId;
-    }
 
     public void setKayttajatunnus(String kayttajatunnus) {
         this.kayttajatunnus = kayttajatunnus;
@@ -116,9 +107,5 @@ public class Kayttaja {
 
     public void setSalasana(String salasana) {
         this.salasana = salasana;
-    }
-
-    public void setKayttajaId(int kayttajaId) {
-        this.kayttajaId = kayttajaId;
     }
 }
