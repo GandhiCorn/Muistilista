@@ -70,7 +70,6 @@ public class Kirjautuminen extends ToistuvaKoodi {
                 asetaVirhe("Kirjautuminen epäonnistui! Käyttäjää ei löytynyt järjestelmästä", request);
                 naytaJSP("login.jsp", request, response);
             } else {
-                
                 session.setAttribute("kirjautunut", client);
                 response.sendRedirect("Index");
             }
@@ -81,7 +80,6 @@ public class Kirjautuminen extends ToistuvaKoodi {
             Logger.getLogger(Kirjautuminen.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        //Uuden käyttä  jän luonti
     }
 
 // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

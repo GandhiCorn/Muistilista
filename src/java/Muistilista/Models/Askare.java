@@ -43,7 +43,7 @@ public class Askare {
 
     public static List<Askare> etsiAskareet(String kayttaja) throws NamingException, SQLException {
 
-        String sql = "select kayttaja, nimi, tarkeysarvo, luokkaid, askareenid from askare where kayttaja = ?";
+        String sql = "select askareenid, tarkeysarvo, nimi, kayttaja, luokkaid from askare where kayttaja = ?";
         Connection yhteys = Yhteys.getYhteys();
         PreparedStatement kysely = yhteys.prepareStatement(sql);
         kysely.setString(1, kayttaja);
@@ -63,10 +63,10 @@ public class Askare {
             //Kutsutaan sopivat tiedot vastaanottavaa konstruktoria 
             //ja asetetaan palautettava olio:
             loydettyAskare = new Askare();
-            loydettyAskare.setNimi(rs.getString("nimi"));
-            loydettyAskare.setTarkeys((Integer) rs.getObject("tarkeysarvo"));
-            loydettyAskare.setKayttaja(rs.getString("kayttaja"));
             loydettyAskare.setAskareenId((Integer) rs.getObject("askareenid"));
+            loydettyAskare.setTarkeys((Integer) rs.getObject("tarkeysarvo"));
+            loydettyAskare.setNimi(rs.getString("nimi"));
+            loydettyAskare.setKayttaja(rs.getString("kayttaja"));         
             loydettyAskare.setLuokkaId((Integer) rs.getObject("luokkaid"));
 
             askareet.add(loydettyAskare);
