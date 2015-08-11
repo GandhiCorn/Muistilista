@@ -26,6 +26,12 @@ public class Askare {
     private int luokkaId;
 
     public Askare() {
+        this.askareenId = -1;
+        this.luokkaId = -1;
+        this.nimi = null;
+        this.tarkeys = -1;
+        this.kayttaja = null;
+
     }
 
     public Askare(int askareenId, String nimi, int tarkeys, int luokkaId, String kayttaja) {
