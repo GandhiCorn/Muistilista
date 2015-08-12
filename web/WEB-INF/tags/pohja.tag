@@ -1,8 +1,3 @@
-<%-- 
-    Document   : pohja
-    Created on : Sep 21, 2014, 1:10:08 AM
-    Author     : Jyri
---%>
 <%@tag description="Esimerkistä muokattu pohja muistilistalle" pageEncoding="UTF-8" trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@attribute name="pageTitle"%>
@@ -21,7 +16,7 @@
         </div>
         <ul class="nav nav-tabs" role="tablist">
             <li><a href="IndexServlet">Etusivu</a></li>           
-            <li><a href="ClassServlet">Hallinnoi luokkia</a></li>
+            <li><a href="ClassServlet">Luokat</a></li>
             <li><a href="Logout">Kirjaudu ulos</a></li>
         </ul>
 

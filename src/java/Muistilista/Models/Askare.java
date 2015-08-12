@@ -5,13 +5,15 @@
  */
 package Muistilista.Models;
 
-import Muistilista.Servlets.AskareS;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.naming.NamingException;
 
 /**
@@ -20,32 +22,84 @@ import javax.naming.NamingException;
  */
 public class Askare {
 
-
+    private Map<String, String> virheet = new HashMap<String, String>();
     private String nimi;
     private int tarkeys;
     private String kayttaja;
     private int askareenId;
-    private int luokkaId;
+    private String luokka;
 
     public Askare() {
         this.askareenId = -1;
-        this.luokkaId = -1;
+        this.luokka = null;
         this.nimi = null;
         this.tarkeys = -1;
         this.kayttaja = null;
     }
 
-    public Askare(int askareenId, String nimi, int tarkeys, int luokkaId, String kayttaja) {
+    public Askare(int askareenId, String nimi, int tarkeys, String luokka, String kayttaja) {
         this.askareenId = askareenId;
-        this.luokkaId = luokkaId;
+        this.luokka = luokka;
         this.nimi = nimi;
         this.tarkeys = tarkeys;
         this.kayttaja = kayttaja;
-    }
-    
-        public static List<Askare> etsiAskare(int id) throws NamingException, SQLException {
 
-        String sql = "select askareenid, tarkeysarvo, nimi, kayttaja, luokkaid from askare where askareenid = ?";
+    }
+
+    public static void luoUusiAskare(Askare askare) throws NamingException, SQLException {
+        String sql = "insert into askare (askareenid, tarkeysarvo, nimi, kayttaja, luokka) values (?,?,?,?,?) RETURNING askareenid";
+        Connection yhteys = Yhteys.getYhteys();
+        PreparedStatement kysely = yhteys.prepareStatement(sql);
+        kysely.setInt(1, askare.askareenId);
+        kysely.setInt(2, askare.tarkeys);
+        kysely.setString(3, askare.nimi);
+        kysely.setString(4, askare.kayttaja);
+        kysely.setString(5, askare.luokka);
+
+        kysely.executeUpdate();
+
+        try {
+            kysely.close();
+        } catch (Exception e) {
+        }
+        try {
+            yhteys.close();
+        } catch (Exception e) {
+        }
+    }
+
+    public void lisaaKantaan() throws NamingException, SQLException {
+        String sql = "insert into askare (askareenid, tarkeysarvo, nimi, kayttaja, luokka) values (?,?,?,?,?) RETURNING askareenid";
+        Connection yhteys = Yhteys.getYhteys();
+        PreparedStatement kysely = yhteys.prepareStatement(sql);
+        kysely.setInt(1, this.getAskareenId());
+        kysely.setInt(2, this.getTarkeys());
+        kysely.setString(3, this.getNimi());
+        kysely.setString(4, this.getKayttaja());
+        kysely.setString(5, this.getLuokka());
+
+        ResultSet ids = kysely.executeQuery();
+        ids.next();
+        this.askareenId = ids.getInt(1);
+
+        try {
+            ids.close();
+        } catch (Exception e) {
+        }
+        try {
+            kysely.close();
+        } catch (Exception e) {
+        }
+        try {
+            yhteys.close();
+        } catch (Exception e) {
+        }
+
+    }
+
+    public static List<Askare> etsiAskare(int id) throws NamingException, SQLException {
+
+        String sql = "select askareenid, tarkeysarvo, nimi, kayttaja, luokka from askare where askareenid = ?";
         Connection yhteys = Yhteys.getYhteys();
         PreparedStatement kysely = yhteys.prepareStatement(sql);
         kysely.setInt(1, id);
@@ -68,8 +122,8 @@ public class Askare {
             loydettyAskare.setAskareenId((Integer) rs.getObject("askareenid"));
             loydettyAskare.setTarkeys((Integer) rs.getObject("tarkeysarvo"));
             loydettyAskare.setNimi(rs.getString("nimi"));
-            loydettyAskare.setKayttaja(rs.getString("kayttaja"));         
-            loydettyAskare.setLuokkaId((Integer) rs.getObject("luokkaid"));
+            loydettyAskare.setKayttaja(rs.getString("kayttaja"));
+            loydettyAskare.setLuokka(rs.getString("luokka"));
 
             askareet.add(loydettyAskare);
 
@@ -96,7 +150,7 @@ public class Askare {
 
     public static List<Askare> etsiAskareet(String kayttaja) throws NamingException, SQLException {
 
-        String sql = "select askareenid, tarkeysarvo, nimi, kayttaja, luokkaid from askare where kayttaja = ?";
+        String sql = "select askareenid, tarkeysarvo, nimi, kayttaja, luokka from askare where kayttaja = ?";
         Connection yhteys = Yhteys.getYhteys();
         PreparedStatement kysely = yhteys.prepareStatement(sql);
         kysely.setString(1, kayttaja);
@@ -119,8 +173,8 @@ public class Askare {
             loydettyAskare.setAskareenId((Integer) rs.getObject("askareenid"));
             loydettyAskare.setTarkeys((Integer) rs.getObject("tarkeysarvo"));
             loydettyAskare.setNimi(rs.getString("nimi"));
-            loydettyAskare.setKayttaja(rs.getString("kayttaja"));         
-            loydettyAskare.setLuokkaId((Integer) rs.getObject("luokkaid"));
+            loydettyAskare.setKayttaja(rs.getString("kayttaja"));
+            loydettyAskare.setLuokka(rs.getString("luokka"));
 
             askareet.add(loydettyAskare);
 
@@ -149,8 +203,8 @@ public class Askare {
         return this.askareenId;
     }
 
-    public int getLuokkaId() {
-        return this.luokkaId;
+    public String getLuokka() {
+        return this.luokka;
     }
 
     public int getTarkeys() {
@@ -173,15 +227,48 @@ public class Askare {
         this.askareenId = aId;
     }
 
-    public void setNimi(String nimi) {
-        this.nimi = nimi;
+    public void setNimi(String uusiNimi) {
+
+        if (uusiNimi.trim().length() == 0) {
+            virheet.put("nimi", "Nimi ei saa olla tyhjä.");
+        } else {
+            this.nimi = uusiNimi;
+            virheet.remove("nimi");
+        }
+
     }
 
-    public void setTarkeys(int tarkeys) {
-        this.tarkeys = tarkeys;
+    public void setTarkeys(int uusiTarkeys) {
+        if (uusiTarkeys <= 0) {
+            virheet.put("tarkeys", "Askareella täytyy olla positiivinen tärkeysarvo.");
+        } else {
+            this.tarkeys = uusiTarkeys;
+            virheet.remove("tarkeys");
+        }
     }
 
-    public void setLuokkaId(int luokkaId) {
-        this.luokkaId = luokkaId;
+    public void setTarkeys(String uusiTarkeys) {
+        try {
+            setTarkeys(Integer.parseInt(uusiTarkeys));
+        } catch (NumberFormatException e) {
+            virheet.put("tarkeys", "Askareen tärkeysarvon tulee olla kokonaisluku.");
+        }
+    }
+
+    public void setLuokka(String luokka) throws NamingException, SQLException {
+        if (!Luokka.etsi(luokka)) {
+            this.virheet.put("luokka_id", "Luokkaa ei löytynyt tietokannasta");
+        } else {
+            this.luokka = luokka;
+            virheet.remove("luokka_id");
+        }
+    }
+
+    public boolean onkoKelvollinen() {
+        return this.virheet.isEmpty();
+    }
+
+    public Collection<String> getVirheet() {
+        return virheet.values();
     }
 }

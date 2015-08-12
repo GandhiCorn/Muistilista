@@ -1,16 +1,41 @@
-@charset "utf-8";
-/* CSS Document */
-
-.bar
-{
-    width:40px;
+.ylapalkki {
+    position: relative;
+    font-family: Verdana, sans-serif;
 }
 
-#right
-{
-    float:right;
-    margin-right:20px;
-    background:#06F;
+.content {
+    position: relative;
+    margin-left: 50px;
+}
+
+.tarkea {
+    color: red;
+
+}
+
+h2 {
+    font-size: 150%;
+}
+
+#table-wrapper {
+    position:relative;
+}
+#table-scroll {
+    height:510px;
+    overflow:auto;  
+    margin-top:20px;
+    width:50%;
+    margin-bottom: 15px;
+}
+#table-wrapper table {
+    width:100%;
+    font-size: 130%;
+    background:#fbfbfb;
+    
+
+}
+td {
+    padding-bottom:  5px;
 }
 
 .keskitys {
