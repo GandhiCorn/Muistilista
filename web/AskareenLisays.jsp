@@ -42,7 +42,7 @@
             <input type="hidden" name="askareenId" value="${askareenId}">
 
             <div class="btn-group-vertical">
-                <button type="submit" class="btn btn-default">Tallenna</button>
+                <button type="submit" class="btn btn-default">Luo askare</button>
             </div>
         </form>
 
