@@ -49,7 +49,7 @@ public class AskareServlet extends ToistuvaKoodi {
         } catch (SQLException ex) {
             Logger.getLogger(AskareServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
-        naytaJSP("AskareenLisaaminen.jsp", request, response);
+        naytaJSP("AskareenLisays.jsp", request, response);
         
     }
 
