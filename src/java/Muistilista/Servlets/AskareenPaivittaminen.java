@@ -51,13 +51,13 @@ public class AskareenPaivittaminen extends ToistuvaKoodi {
             //Askare uusiAskare = Askare.etsiAskare(id);
             Askare uusiAskare = new Askare();
             uusiAskare.setAskareenId(id);
-            uusiAskare.setLuokka2(request.getParameter("luokka"));
+            uusiAskare.setLuokka1(request.getParameter("luokka"));
             uusiAskare.setNimi(request.getParameter("nimi"));
             uusiAskare.setTarkeys(request.getParameter("tarkeys"));
             uusiAskare.setKayttaja(kayttaja);
 
             if (uusiAskare.onkoKelvollinen()) {
-                uusiAskare.lisaaKantaan();
+                uusiAskare.paivitaAskare(uusiAskare);
                 session.setAttribute("ilmoitus", "Askare lisätty onnistuneesti.");
                 response.sendRedirect("Index");
             } else {

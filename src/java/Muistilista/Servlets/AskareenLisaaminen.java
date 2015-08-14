@@ -62,7 +62,7 @@ public class AskareenLisaaminen extends ToistuvaKoodi {
                 request.setAttribute("askare", uusiAskare);
                 request.setAttribute("luokat", Luokka.haeKaikki(kayttaja));
                 asetaVirhe(virheet.toString(), request);
-                naytaJSP("AskareenMuokkaus.jsp", request, response);
+                naytaJSP("AskareenLisays.jsp", request, response);
             }
 
         } catch (NamingException ex) {
