@@ -20,7 +20,7 @@
             <tbody>
                 <c:forEach var="askare" items="${askareet}"> 
                     <tr>
-                        <td><a href="AskareS?id=${askare.askareenId}"><c:out value="${askare.nimi}"/></a></td>
+                        <td><a href="AskareenPaivittaminen?id=${askare.askareenId}"><c:out value="${askare.nimi}"/></a></td>
                         <td><c:out value="${askare.tarkeys}"/></td>                        
                         <td><c:out value="${askare.luokka}"/></td>
                     </tr>

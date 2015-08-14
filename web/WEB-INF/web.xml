@@ -52,6 +52,10 @@
         <servlet-name>AskareServlet</servlet-name>
         <servlet-class>Muistilista.Servlets.AskareServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AskareenPaivittaminen</servlet-name>
+        <servlet-class>Muistilista.Servlets.AskareenPaivittaminen</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Kokeilu</servlet-name>
         <url-pattern>/Kokeilu</url-pattern>
@@ -103,6 +107,10 @@
     <servlet-mapping>
         <servlet-name>AskareServlet</servlet-name>
         <url-pattern>/AskareServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AskareenPaivittaminen</servlet-name>
+        <url-pattern>/AskareenPaivittaminen</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

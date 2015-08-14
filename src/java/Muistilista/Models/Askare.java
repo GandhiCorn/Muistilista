@@ -68,6 +68,28 @@ public class Askare {
         }
     }
 
+    public void paivitaAskare(Askare askare) throws NamingException, SQLException {
+        String sql = "update askare set tarkeysArvo = ?, nimi = ?, kayttaja = ?, luokka = ? WHERE askareenId = ?";
+        Connection yhteys = Yhteys.getYhteys();
+        PreparedStatement kysely = yhteys.prepareStatement(sql);
+        kysely.setInt(1, askare.getTarkeys());
+        kysely.setString(2, askare.getNimi());
+        kysely.setString(3, askare.getKayttaja());
+        kysely.setString(4, askare.getLuokka());
+
+        kysely.executeUpdate();
+
+        try {
+            kysely.close();
+        } catch (Exception e) {
+        }
+        try {
+            yhteys.close();
+        } catch (Exception e) {
+        }
+
+    }
+
     public void lisaaKantaan() throws NamingException, SQLException {
         String sql = "insert into askare (tarkeysarvo, nimi, kayttaja, luokka) values (?,?,?,?) RETURNING askareenid";
         Connection yhteys = Yhteys.getYhteys();
@@ -97,7 +119,7 @@ public class Askare {
 
     }
 
-    public static List<Askare> etsiAskare(int id) throws NamingException, SQLException {
+    public static Askare etsiAskare(int id) throws NamingException, SQLException {
 
         String sql = "select askareenid, tarkeysarvo, nimi, kayttaja, luokka from askare where askareenid = ?";
         Connection yhteys = Yhteys.getYhteys();
@@ -107,8 +129,6 @@ public class Askare {
 
         //Alustetaan muuttuja, joka sisältää löydetyn askareen
         Askare loydettyAskare = null;
-
-        List<Askare> askareet = new ArrayList<Askare>();
 
         //next-metodia on kutsuttava aina, kun käsitellään 
         //vasta kannasta saatuja ResultSet-olioita.
@@ -124,8 +144,6 @@ public class Askare {
             loydettyAskare.setNimi(rs.getString("nimi"));
             loydettyAskare.setKayttaja(rs.getString("kayttaja"));
             loydettyAskare.setLuokka1(rs.getString("luokka"));
-
-            askareet.add(loydettyAskare);
 
         }
 
@@ -144,7 +162,7 @@ public class Askare {
         } catch (Exception e) {
         }
 
-        return askareet;
+        return loydettyAskare;
 
     }
 
@@ -198,7 +216,7 @@ public class Askare {
         return askareet;
 
     }
-        
+
     public int getAskareenId() {
         return this.askareenId;
     }
