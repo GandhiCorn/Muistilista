@@ -30,10 +30,10 @@ public class Askare {
     private String luokka;
 
     public Askare() {
-        this.askareenId = -1;
+        this.askareenId = 0;
         this.luokka = null;
         this.nimi = null;
-        this.tarkeys = -1;
+        this.tarkeys = 0;
         this.kayttaja = null;
     }
 
@@ -69,17 +69,17 @@ public class Askare {
     }
 
     public void lisaaKantaan() throws NamingException, SQLException {
-        String sql = "insert into askare (askareenid, tarkeysarvo, nimi, kayttaja, luokka) values (?,?,?,?,?) RETURNING askareenid";
+        String sql = "insert into askare (tarkeysarvo, nimi, kayttaja, luokka) values (?,?,?,?) RETURNING askareenid";
         Connection yhteys = Yhteys.getYhteys();
         PreparedStatement kysely = yhteys.prepareStatement(sql);
-        kysely.setInt(1, this.getAskareenId());
-        kysely.setInt(2, this.getTarkeys());
-        kysely.setString(3, this.getNimi());
-        kysely.setString(4, this.getKayttaja());
-        kysely.setString(5, this.getLuokka());
+        kysely.setInt(1, this.getTarkeys());
+        kysely.setString(2, this.getNimi());
+        kysely.setString(3, this.getKayttaja());
+        kysely.setString(4, this.getLuokka());
 
         ResultSet ids = kysely.executeQuery();
         ids.next();
+
         this.askareenId = ids.getInt(1);
 
         try {
@@ -123,7 +123,7 @@ public class Askare {
             loydettyAskare.setTarkeys((Integer) rs.getObject("tarkeysarvo"));
             loydettyAskare.setNimi(rs.getString("nimi"));
             loydettyAskare.setKayttaja(rs.getString("kayttaja"));
-            loydettyAskare.setLuokka(rs.getString("luokka"));
+            loydettyAskare.setLuokka1(rs.getString("luokka"));
 
             askareet.add(loydettyAskare);
 
@@ -174,7 +174,7 @@ public class Askare {
             loydettyAskare.setTarkeys((Integer) rs.getObject("tarkeysarvo"));
             loydettyAskare.setNimi(rs.getString("nimi"));
             loydettyAskare.setKayttaja(rs.getString("kayttaja"));
-            loydettyAskare.setLuokka(rs.getString("luokka"));
+            loydettyAskare.setLuokka1(rs.getString("luokka"));
 
             askareet.add(loydettyAskare);
 
@@ -198,7 +198,7 @@ public class Askare {
         return askareet;
 
     }
-
+        
     public int getAskareenId() {
         return this.askareenId;
     }
@@ -223,8 +223,16 @@ public class Askare {
         this.kayttaja = kayttaja;
     }
 
-    public void setAskareenId(int aId) {
-        this.askareenId = aId;
+    public void setAskareenId(int uusiId) {
+        this.askareenId = uusiId;
+    }
+
+    public void setAskareenId(String uusiId) {
+        try {
+            setAskareenId(Integer.parseInt(uusiId));
+        } catch (NumberFormatException e) {
+            virheet.put("id", "AskareenIdssä jotain" + uusiId);
+        }
     }
 
     public void setNimi(String uusiNimi) {
@@ -235,7 +243,6 @@ public class Askare {
             this.nimi = uusiNimi;
             virheet.remove("nimi");
         }
-
     }
 
     public void setTarkeys(int uusiTarkeys) {
@@ -255,8 +262,12 @@ public class Askare {
         }
     }
 
-    public void setLuokka(String luokka) throws NamingException, SQLException {
-        if (!Luokka.etsi(luokka)) {
+    public void setLuokka1(String uusiLuokka) {
+        this.luokka = uusiLuokka;
+    }
+
+    public void setLuokka2(String luokka) throws NamingException, SQLException {
+        if (!luokka.equals("") && !Luokka.etsi(luokka)) {
             this.virheet.put("luokka_id", "Luokkaa ei löytynyt tietokannasta");
         } else {
             this.luokka = luokka;

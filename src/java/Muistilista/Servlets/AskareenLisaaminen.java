@@ -6,6 +6,8 @@
 package Muistilista.Servlets;
 
 import Muistilista.Models.Askare;
+import Muistilista.Models.Kayttaja;
+import Muistilista.Models.Luokka;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -38,24 +40,28 @@ public class AskareenLisaaminen extends ToistuvaKoodi {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
+
+        HttpSession session = request.getSession();
+        Kayttaja kirjautunut = (Kayttaja) session.getAttribute("kirjautunut");
+        String kayttaja = kirjautunut.getKayttajatunnus();
         try {
             Askare uusiAskare = new Askare();
             uusiAskare.setNimi(request.getParameter("nimi"));
             uusiAskare.setTarkeys(request.getParameter("tarkeys"));
-            uusiAskare.setLuokka(request.getParameter("luokka"));
+            uusiAskare.setLuokka2(request.getParameter("luokka"));
+            uusiAskare.setKayttaja(kayttaja);
 
             if (uusiAskare.onkoKelvollinen()) {
                 uusiAskare.lisaaKantaan();
-
+                session.setAttribute("ilmoitus", "Askare lisätty onnistuneesti.");
                 response.sendRedirect("Index");
 
-                HttpSession session = request.getSession();
-                session.setAttribute("ilmoitus", "Askare lisätty onnistuneesti.");
             } else {
                 Collection<String> virheet = uusiAskare.getVirheet();
-
                 request.setAttribute("virheet", virheet);
                 request.setAttribute("askare", uusiAskare);
+                request.setAttribute("luokat", Luokka.haeKaikki(kayttaja));
+                asetaVirhe(virheet.toString(), request);
                 naytaJSP("AskareenMuokkaus.jsp", request, response);
             }
 

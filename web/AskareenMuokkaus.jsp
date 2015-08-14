@@ -22,13 +22,22 @@
                 <h2>Tärkeysarvo: </h2>
                 <input type="text" name="tarkeys" value="<c:out value="${tarkeys}"/>" class="form-control" placeholder="Tärkeysarvo">
             </div>
-            <div class="input-group input-group-lg">                
+            <div class="input-group input-group">                
                 <h2>Luokka: </h2>
                 <input type="text" name="luokka" value="<c:out value="${luokka}"/>" class="form-control" placeholder="Luokan nimi">
             </div>
-
-            <input type="hidden" name="ID" value="${id}">
-            <input type="hidden" name="kayttaja" value="${kayttaja}">
+            <%--<br/>
+            <br/>
+            <label>Luokka</label>
+            <select name="luokka">
+                <c:forEach var="luokka" items="${luokat}">
+                    <option value="${luokka.luokkaId}">${luokka.nimi}</option>
+                </c:forEach>
+                    <input type="button" value="Test">
+                <input type="text" name="SelectedCity" value="" />
+                <input type="button" onclick="var s = this.form.elements['Luokka'];
+                        this.form.elements['ValittuLuokka'].value = s.options[s.selectedIndex].textContent">
+            </select>--%>
             <div class="btn-group-vertical">
                 <button type="submit" class="btn btn-default">Tallenna</button>
             </div>

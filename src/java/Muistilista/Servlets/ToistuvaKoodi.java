@@ -60,6 +60,27 @@ public class ToistuvaKoodi extends HttpServlet {
         session.removeAttribute("kirjautunut");
     }
 
+    protected void haeIlmoitus(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        String ilmoitus = (String) session.getAttribute("ilmoitus");
+
+        if (ilmoitus != null) {
+            // Samalla kun viesti haetaan, se poistetaan istunnosta,
+            // ettei se näkyisi myöhemmin jollain toisella sivulla uudestaan.
+            session.removeAttribute("ilmoitus");
+
+            request.setAttribute("ilmoitus", ilmoitus);
+        }
+    }
+
+    protected String haeKayttaja(HttpServletRequest request) {
+
+        HttpSession session = request.getSession();
+        Kayttaja kirjautunut = (Kayttaja) session.getAttribute("kirjautunut");
+
+        return kirjautunut.getKayttajatunnus();
+    }
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.

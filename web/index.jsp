@@ -5,7 +5,9 @@
 <t:pohja pageTitle="Muistilista"> 
     <h1>Tervetuloa ${kayttaja}, sinulla on ${listanKoko} tehtävää listallasi.</h1>  
 
-
+    <c:if test="${ilmoitus != null}">
+        <div class="alert alert-info">${ilmoitus}</div>
+    </c:if>
     <div class="bs-example">
         <table class="table">
             <thead>
@@ -25,7 +27,7 @@
                 </c:forEach>
             </tbody>
         </table>
-        <form action="AskareenMuokkaus.jsp?id=-1" method="POST">
+        <form action="AskareServlet?id=-1" method="POST">
             <button type="submit" class="btn btn-default">Luo uusi askare</button>
         </form>
     </div>
