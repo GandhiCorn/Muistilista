@@ -36,14 +36,18 @@ public class AskareenPaivittaminen extends ToistuvaKoodi {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
 
+        String askareenId = request.getParameter("id");
+
         HttpSession session = request.getSession();
         Kayttaja kirjautunut = (Kayttaja) session.getAttribute("kirjautunut");
         String kayttaja = kirjautunut.getKayttajatunnus();
-        String askareenId = request.getParameter("askareenId");
-        String nimi = request.getParameter("nimi");
-        String luokka = request.getParameter("luokka");
-        String tarkeys = request.getParameter("tarkeys");
-        
+
+        int id;
+        try {
+            id = Integer.parseInt(askareenId);
+        } catch (Exception e) {
+            id = -1;
+        }
 
         try {
             Askare uusiAskare = new Askare();
@@ -51,18 +55,13 @@ public class AskareenPaivittaminen extends ToistuvaKoodi {
             uusiAskare.setTarkeys(request.getParameter("tarkeys"));
             uusiAskare.setLuokka1(request.getParameter("luokka"));
             uusiAskare.setKayttaja(kayttaja);
-
-            try {
-                int numeerinenID = Integer.parseInt(askareenId);
-                uusiAskare.setAskareenId(numeerinenID);
-            } catch (NumberFormatException e) {
-            }
-            uusiAskare.paivitaAskare();
+            uusiAskare.setAskareenId(id);
 
             if (uusiAskare.onkoKelvollinen()) {
                 uusiAskare.paivitaAskare();
                 session.setAttribute("ilmoitus", "Askare muokattu onnistuneesti." + askareenId );
                 response.sendRedirect("Index");
+                
             } else {
                 Collection<String> virheet = uusiAskare.getVirheet();
                 request.setAttribute("virheet", virheet);

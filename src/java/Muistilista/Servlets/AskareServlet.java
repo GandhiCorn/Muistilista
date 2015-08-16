@@ -59,16 +59,16 @@ public class AskareServlet extends ToistuvaKoodi {
         } catch (SQLException ex) {
             Logger.getLogger(AskareServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
-        response.sendRedirect("IndexServlet");
-
+        response.sendRedirect("Index");
+        /*
         try {
-            request.setAttribute("luokat", Luokka.haeKaikki(kayttaja));
+        request.setAttribute("luokat", Luokka.haeKaikki(kayttaja));
         } catch (NamingException ex) {
-            Logger.getLogger(AskareServlet.class.getName()).log(Level.SEVERE, null, ex);
+        Logger.getLogger(AskareServlet.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
-            Logger.getLogger(AskareServlet.class.getName()).log(Level.SEVERE, null, ex);
+        Logger.getLogger(AskareServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
-        naytaJSP("AskareenLisays.jsp", request, response);
+        naytaJSP("AskareenLisays.jsp", request, response);*/
 
     }
 

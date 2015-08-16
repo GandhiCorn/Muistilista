@@ -30,7 +30,7 @@
         </table>
 
         <input type="hidden" name="askareenId" value="${askare.askareenId}">
-        <form action="AskareServlet?id=-1" method="POST">
+        <form action="AskareenLisays.jsp?id=-1" method="POST">
             <button type="submit" class="btn btn-default">Luo uusi askare</button>
         </form>
     </div>

@@ -60,16 +60,10 @@ public class AskareenLisaaminen extends ToistuvaKoodi {
             }
 
             if (uusiAskare.onkoKelvollinen()) {
-
-                if (uusiAskare.getAskareenId() == -1) {
                     uusiAskare.lisaaKantaan();
                     session.setAttribute("ilmoitus", "Askare lisätty onnistuneesti.");
                     response.sendRedirect("Index");
-                } else {
-                    uusiAskare.paivitaAskare();
-                    session.setAttribute("ilmoitus", "Askare päivitetty onnistuneesti.");
-                    response.sendRedirect("Index");
-                }
+
 
             } else {
                 Collection<String> virheet = uusiAskare.getVirheet();
