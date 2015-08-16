@@ -30,7 +30,7 @@
                 </c:forEach>
             </select>--%>
 
-            <input type="hidden" name="askareenId" value="${askareenId}">
+            <input type="hidden" name="askareenId" value="${askare.askareenId}">
 
             <div class="btn-group-vertical">
                 <button type="submit" class="btn btn-default">Tallenna</button>

@@ -30,11 +30,6 @@ public class Askare {
     private String luokka;
 
     public Askare() {
-        this.askareenId = -1;
-        this.luokka = null;
-        this.nimi = null;
-        this.tarkeys = 0;
-        this.kayttaja = null;
     }
 
     public Askare(int askareenId, String nimi, int tarkeys, String luokka, String kayttaja) {
