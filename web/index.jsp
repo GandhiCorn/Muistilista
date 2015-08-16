@@ -23,10 +23,13 @@
                         <td><a href="AskareenPaivittaminen?id=${askare.askareenId}"><c:out value="${askare.nimi}"/></a></td>
                         <td><c:out value="${askare.tarkeys}"/></td>                        
                         <td><c:out value="${askare.luokka}"/></td>
+                        <td><a href="AskareServlet?id=${askare.askareenId}&poista=1"><c:out value="POISTA"/></a></td>
                     </tr>
                 </c:forEach>
             </tbody>
         </table>
+
+        <input type="hidden" name="askareenId" value="${askare.askareenId}">
         <form action="AskareServlet?id=-1" method="POST">
             <button type="submit" class="btn btn-default">Luo uusi askare</button>
         </form>

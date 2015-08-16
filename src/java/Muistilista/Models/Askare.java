@@ -86,6 +86,25 @@ public class Askare {
 
     }
 
+    public static void poistaAskare(int id) throws NamingException, SQLException {
+
+        String sql = "delete from askare where askareenId = ?";
+        Connection yhteys = Yhteys.getYhteys();
+        PreparedStatement kysely = yhteys.prepareStatement(sql);
+        kysely.setInt(1, id);
+
+        kysely.executeUpdate();
+        try {
+            kysely.close();
+        } catch (Exception e) {
+        }
+        try {
+            yhteys.close();
+        } catch (Exception e) {
+        }
+
+    }
+
     public void lisaaKantaan() throws NamingException, SQLException {
         String sql = "insert into askare (tarkeysarvo, nimi, kayttaja, luokka) values (?,?,?,?) RETURNING askareenid";
         Connection yhteys = Yhteys.getYhteys();
@@ -278,6 +297,7 @@ public class Askare {
     public void setTarkeys(String uusiTarkeys) {
         try {
             setTarkeys(Integer.parseInt(uusiTarkeys));
+            virheet.remove("tarkeys");
         } catch (NumberFormatException e) {
             virheet.put("tarkeys", "Askareen tärkeysarvon tulee olla kokonaisluku.");
         }

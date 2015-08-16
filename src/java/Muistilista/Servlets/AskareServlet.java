@@ -5,6 +5,7 @@
  */
 package Muistilista.Servlets;
 
+import Muistilista.Models.Askare;
 import Muistilista.Models.Kayttaja;
 import Muistilista.Models.Luokka;
 import java.io.IOException;
@@ -38,9 +39,27 @@ public class AskareServlet extends ToistuvaKoodi {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
 
+        String askareenId = request.getParameter("id");
+
         HttpSession session = request.getSession();
         Kayttaja kirjautunut = (Kayttaja) session.getAttribute("kirjautunut");
         String kayttaja = kirjautunut.getKayttajatunnus();
+
+        int id;
+        try {
+            id = Integer.parseInt(askareenId);
+        } catch (Exception e) {
+            id = -1;
+        }
+
+        try {
+            Askare.poistaAskare(id);
+        } catch (NamingException ex) {
+            Logger.getLogger(AskareServlet.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(AskareServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        response.sendRedirect("IndexServlet");
 
         try {
             request.setAttribute("luokat", Luokka.haeKaikki(kayttaja));
@@ -50,7 +69,7 @@ public class AskareServlet extends ToistuvaKoodi {
             Logger.getLogger(AskareServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
         naytaJSP("AskareenLisays.jsp", request, response);
-        
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
