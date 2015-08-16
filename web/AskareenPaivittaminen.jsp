@@ -28,10 +28,6 @@
                 <c:forEach var="luokka" items="${luokat}">
                     <option value="${luokka.luokkaId}">${luokka.nimi}</option>
                 </c:forEach>
-                    <input type="button" value="Test">
-                <input type="text" name="SelectedCity" value="" />
-                <input type="button" onclick="var s = this.form.elements['Luokka'];
-                        this.form.elements['ValittuLuokka'].value = s.options[s.selectedIndex].textContent">
             </select>--%>
 
             <input type="hidden" name="askareenId" value="${askareenId}">

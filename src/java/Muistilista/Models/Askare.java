@@ -68,15 +68,15 @@ public class Askare {
         }
     }
 
-    public static void paivitaAskare(Askare uusiAskare) throws NamingException, SQLException {
+    public void paivitaAskare() throws NamingException, SQLException {
         String sql = "update askare set tarkeysArvo = ?, nimi = ?, kayttaja = ?, luokka = ? WHERE askareenId = ?";
         Connection yhteys = Yhteys.getYhteys();
         PreparedStatement kysely = yhteys.prepareStatement(sql);
-        kysely.setInt(1, uusiAskare.getTarkeys());
-        kysely.setString(2, uusiAskare.getNimi());
-        kysely.setString(3, uusiAskare.getKayttaja());
-        kysely.setString(4, uusiAskare.getLuokka());
-        kysely.setInt(5, uusiAskare.getAskareenId());
+        kysely.setInt(1, this.getTarkeys());
+        kysely.setString(2, this.getNimi());
+        kysely.setString(3, this.getKayttaja());
+        kysely.setString(4, this.getLuokka());
+        kysely.setInt(5, this.getAskareenId());
 
         kysely.executeUpdate();
 

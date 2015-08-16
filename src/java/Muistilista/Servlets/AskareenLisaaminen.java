@@ -66,7 +66,7 @@ public class AskareenLisaaminen extends ToistuvaKoodi {
                     session.setAttribute("ilmoitus", "Askare lisätty onnistuneesti.");
                     response.sendRedirect("Index");
                 } else {
-                    uusiAskare.paivitaAskare(uusiAskare);
+                    uusiAskare.paivitaAskare();
                     session.setAttribute("ilmoitus", "Askare päivitetty onnistuneesti.");
                     response.sendRedirect("Index");
                 }
