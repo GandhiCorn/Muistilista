@@ -44,17 +44,32 @@ public class AskareenLisaaminen extends ToistuvaKoodi {
         HttpSession session = request.getSession();
         Kayttaja kirjautunut = (Kayttaja) session.getAttribute("kirjautunut");
         String kayttaja = kirjautunut.getKayttajatunnus();
+        String askareenId = request.getParameter("askareenId");
+
         try {
             Askare uusiAskare = new Askare();
-            uusiAskare.setNimi(request.getParameter("nimi"));
+            uusiAskare.setNimi1(request.getParameter("nimi"));
             uusiAskare.setTarkeys(request.getParameter("tarkeys"));
-            uusiAskare.setLuokka2(request.getParameter("luokka"));
+            uusiAskare.setLuokka1(request.getParameter("luokka"));
             uusiAskare.setKayttaja(kayttaja);
 
+            try {
+                int numeerinenID = Integer.parseInt(askareenId);
+                uusiAskare.setAskareenId(numeerinenID);
+            } catch (NumberFormatException e) {
+            }
+
             if (uusiAskare.onkoKelvollinen()) {
-                uusiAskare.lisaaKantaan();
-                session.setAttribute("ilmoitus", "Askare lisätty onnistuneesti.");
-                response.sendRedirect("Index");
+
+                if (uusiAskare.getAskareenId() == -1) {
+                    uusiAskare.lisaaKantaan();
+                    session.setAttribute("ilmoitus", "Askare lisätty onnistuneesti.");
+                    response.sendRedirect("Index");
+                } else {
+                    uusiAskare.paivitaAskare(uusiAskare);
+                    session.setAttribute("ilmoitus", "Askare päivitetty onnistuneesti.");
+                    response.sendRedirect("Index");
+                }
 
             } else {
                 Collection<String> virheet = uusiAskare.getVirheet();

@@ -30,7 +30,7 @@ public class Askare {
     private String luokka;
 
     public Askare() {
-        this.askareenId = 0;
+        this.askareenId = -1;
         this.luokka = null;
         this.nimi = null;
         this.tarkeys = 0;
@@ -68,14 +68,15 @@ public class Askare {
         }
     }
 
-    public void paivitaAskare(Askare askare) throws NamingException, SQLException {
+    public static void paivitaAskare(Askare uusiAskare) throws NamingException, SQLException {
         String sql = "update askare set tarkeysArvo = ?, nimi = ?, kayttaja = ?, luokka = ? WHERE askareenId = ?";
         Connection yhteys = Yhteys.getYhteys();
         PreparedStatement kysely = yhteys.prepareStatement(sql);
-        kysely.setInt(1, askare.getTarkeys());
-        kysely.setString(2, askare.getNimi());
-        kysely.setString(3, askare.getKayttaja());
-        kysely.setString(4, askare.getLuokka());
+        kysely.setInt(1, uusiAskare.getTarkeys());
+        kysely.setString(2, uusiAskare.getNimi());
+        kysely.setString(3, uusiAskare.getKayttaja());
+        kysely.setString(4, uusiAskare.getLuokka());
+        kysely.setInt(5, uusiAskare.getAskareenId());
 
         kysely.executeUpdate();
 
@@ -141,7 +142,7 @@ public class Askare {
             loydettyAskare = new Askare();
             loydettyAskare.setAskareenId((Integer) rs.getObject("askareenid"));
             loydettyAskare.setTarkeys((Integer) rs.getObject("tarkeysarvo"));
-            loydettyAskare.setNimi(rs.getString("nimi"));
+            loydettyAskare.setNimi1(rs.getString("nimi"));
             loydettyAskare.setKayttaja(rs.getString("kayttaja"));
             loydettyAskare.setLuokka1(rs.getString("luokka"));
 
@@ -190,7 +191,7 @@ public class Askare {
             loydettyAskare = new Askare();
             loydettyAskare.setAskareenId((Integer) rs.getObject("askareenid"));
             loydettyAskare.setTarkeys((Integer) rs.getObject("tarkeysarvo"));
-            loydettyAskare.setNimi(rs.getString("nimi"));
+            loydettyAskare.setNimi2(rs.getString("nimi"));
             loydettyAskare.setKayttaja(rs.getString("kayttaja"));
             loydettyAskare.setLuokka1(rs.getString("luokka"));
 
@@ -253,13 +254,20 @@ public class Askare {
         }
     }
 
-    public void setNimi(String uusiNimi) {
+    public void setNimi1(String uusiNimi) {
+        this.nimi = uusiNimi;
+    }
 
-        if (uusiNimi.trim().length() == 0) {
-            virheet.put("nimi", "Nimi ei saa olla tyhjä.");
+    public void setNimi2(String uusiNimi) {
+        if (uusiNimi == null) {
+            this.nimi = "pekka";
         } else {
-            this.nimi = uusiNimi;
-            virheet.remove("nimi");
+            if (uusiNimi.trim().length() == 0) {
+                virheet.put("nimi", "Nimi ei saa olla tyhjä.");
+            } else {
+                this.nimi = uusiNimi;
+                virheet.remove("nimi");
+            }
         }
     }
 

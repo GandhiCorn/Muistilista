@@ -39,25 +39,23 @@ public class AskareenPaivittaminen extends ToistuvaKoodi {
         HttpSession session = request.getSession();
         Kayttaja kirjautunut = (Kayttaja) session.getAttribute("kirjautunut");
         String kayttaja = kirjautunut.getKayttajatunnus();
-
-        int id = 0;
-        try {
-            id = Integer.parseInt(request.getParameter("askareenId"));
-        } catch (Exception e) {
-            //Virhetilanne. Näytetään käyttäjälle virhe.
-        }
+        String askareenId = request.getParameter("askareenId");
 
         try {
-            //Askare uusiAskare = Askare.etsiAskare(id);
             Askare uusiAskare = new Askare();
-            uusiAskare.setAskareenId(id);
-            uusiAskare.setLuokka1(request.getParameter("luokka"));
-            uusiAskare.setNimi(request.getParameter("nimi"));
+            uusiAskare.setNimi1(request.getParameter("nimi"));
             uusiAskare.setTarkeys(request.getParameter("tarkeys"));
+            uusiAskare.setLuokka1(request.getParameter("luokka"));
             uusiAskare.setKayttaja(kayttaja);
 
+            try {
+                int numeerinenID = Integer.parseInt(askareenId);
+                uusiAskare.setAskareenId(numeerinenID);
+            } catch (NumberFormatException e) {
+            }
+
             if (uusiAskare.onkoKelvollinen()) {
-                uusiAskare.paivitaAskare(uusiAskare);
+                Askare.paivitaAskare(uusiAskare);
                 session.setAttribute("ilmoitus", "Askare lisätty onnistuneesti.");
                 response.sendRedirect("Index");
             } else {
