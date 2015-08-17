@@ -21,6 +21,13 @@
                 <h2>Luokka: </h2>
                 <input type="text" name="luokka" value="<c:out value="${luokka}"/>" class="form-control" placeholder="Luokan nimi">
             </div>
+
+            <input type="hidden" name="askareenId" value="${askare.askareenId}">
+
+            <%--<c:forEach var="askare" items="${askareet}">
+                <input type="hidden" name="askareenId" value="${askare.askareenId}">
+            </c:forEach>--%>
+
             <%--<br/>
             <br/>
             <label>Luokka</label>
@@ -29,9 +36,6 @@
                     <option value="${luokka.luokkaId}">${luokka.nimi}</option>
                 </c:forEach>
             </select>--%>
-
-            <input type="hidden" name="askareenId" value="${askare.askareenId}">
-
             <div class="btn-group-vertical">
                 <button type="submit" class="btn btn-default">Tallenna</button>
             </div>

@@ -56,6 +56,10 @@
         <servlet-name>AskareenPaivittaminen</servlet-name>
         <servlet-class>Muistilista.Servlets.AskareenPaivittaminen</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Muokkaus</servlet-name>
+        <servlet-class>Muistilista.Servlets.Muokkaus</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Kokeilu</servlet-name>
         <url-pattern>/Kokeilu</url-pattern>
@@ -111,6 +115,10 @@
     <servlet-mapping>
         <servlet-name>AskareenPaivittaminen</servlet-name>
         <url-pattern>/AskareenPaivittaminen</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Muokkaus</servlet-name>
+        <url-pattern>/Muokkaus</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

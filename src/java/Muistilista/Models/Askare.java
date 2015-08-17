@@ -85,6 +85,32 @@ public class Askare {
         }
 
     }
+    
+        public static void paivitaAskare(int id, int tarkeys, String nimi, String kayttaja, String luokka) throws NamingException, SQLException {
+
+                String sql = "update askare set tarkeysArvo = ?, nimi = ?, kayttaja = ?, luokka = ? WHERE askareenId = ?";
+        Connection yhteys = Yhteys.getYhteys();
+        PreparedStatement kysely = yhteys.prepareStatement(sql);
+        kysely.setInt(1, tarkeys);
+        kysely.setString(2, nimi);
+        kysely.setString(3, kayttaja);
+        kysely.setString(4, luokka);
+        kysely.setInt(5, id);
+
+        kysely.executeUpdate();
+
+
+        kysely.executeUpdate();
+        try {
+            kysely.close();
+        } catch (Exception e) {
+        }
+        try {
+            yhteys.close();
+        } catch (Exception e) {
+        }
+
+    }
 
     public static void poistaAskare(int id) throws NamingException, SQLException {
 
@@ -260,13 +286,13 @@ public class Askare {
         this.askareenId = uusiId;
     }
 
-    public void setAskareenId(String uusiId) {
-        try {
-            setAskareenId(Integer.parseInt(uusiId));
-        } catch (NumberFormatException e) {
-            virheet.put("id", "AskareenIdssä jotain" + uusiId);
-        }
+    /*    public void setAskareenId(String uusiId) {
+    try {
+    setAskareenId(Integer.parseInt(uusiId));
+    } catch (NumberFormatException e) {
+    virheet.put("id", "AskareenIdssä jotain" + uusiId);
     }
+    }*/
 
     public void setNimi1(String uusiNimi) {
         this.nimi = uusiNimi;

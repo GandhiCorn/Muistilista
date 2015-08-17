@@ -1,15 +1,12 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package Muistilista.Servlets;
 
-import Muistilista.Models.Askare;
-import Muistilista.Models.Kayttaja;
-import Muistilista.Models.Luokka;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
-import java.util.Collection;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -18,9 +15,9 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author tuisk
+ * @author fuksi
  */
-public class AskareenPaivittaminen extends ToistuvaKoodi {
+public class Muokkaus extends ToistuvaKoodi {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,39 +33,18 @@ public class AskareenPaivittaminen extends ToistuvaKoodi {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         HttpSession session = request.getSession();
-        Kayttaja kirjautunut = (Kayttaja) session.getAttribute("kirjautunut");
-        String kayttaja = kirjautunut.getKayttajatunnus();
-        int id  = (Integer) session.getAttribute("id");
-        
+        String askareenId = request.getParameter("askareenId");
+        int id;
         try {
-            Askare uusiAskare = new Askare();
-            uusiAskare.setNimi1(request.getParameter("nimi"));
-            uusiAskare.setTarkeys(request.getParameter("tarkeys"));
-            uusiAskare.setLuokka1(request.getParameter("luokka"));
-            uusiAskare.setKayttaja(kayttaja);
-            uusiAskare.setAskareenId(id);
-
-            if (uusiAskare.onkoKelvollinen()) {
-                uusiAskare.paivitaAskare();
-                session.setAttribute("ilmoitus", "Askare muokattu onnistuneesti." + id);
-                response.sendRedirect("Index");
-
-            } else {
-                Collection<String> virheet = uusiAskare.getVirheet();
-                request.setAttribute("virheet", virheet);
-                request.setAttribute("askare", uusiAskare);
-                request.setAttribute("luokat", Luokka.haeKaikki(kayttaja));
-                asetaVirhe(virheet.toString(), request);
-                naytaJSP("AskareenPaivittaminen.jsp", request, response);
-            }
-        } catch (NamingException ex) {
-            Logger.getLogger(AskareenPaivittaminen.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(AskareenPaivittaminen.class.getName()).log(Level.SEVERE, null, ex);
+            id = Integer.parseInt(askareenId);
+        } catch (Exception e) {
+            id = -1;
         }
+        session.setAttribute("id", id);
+        naytaJSP("AskareenPaivittaminen.jsp", request, response);
     }
 
-// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *

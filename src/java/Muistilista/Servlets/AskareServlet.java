@@ -11,6 +11,7 @@ import Muistilista.Models.Luokka;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.NamingException;
@@ -61,15 +62,14 @@ public class AskareServlet extends ToistuvaKoodi {
         }
         response.sendRedirect("Index");
         /*
-        try {
-        request.setAttribute("luokat", Luokka.haeKaikki(kayttaja));
-        } catch (NamingException ex) {
-        Logger.getLogger(AskareServlet.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-        Logger.getLogger(AskareServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        naytaJSP("AskareenLisays.jsp", request, response);*/
-
+         try {
+         request.setAttribute("luokat", Luokka.haeKaikki(kayttaja));
+         } catch (NamingException ex) {
+         Logger.getLogger(AskareServlet.class.getName()).log(Level.SEVERE, null, ex);
+         } catch (SQLException ex) {
+         Logger.getLogger(AskareServlet.class.getName()).log(Level.SEVERE, null, ex);
+         }
+         naytaJSP("AskareenLisays.jsp", request, response);*/
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
