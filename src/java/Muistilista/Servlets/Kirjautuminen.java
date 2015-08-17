@@ -6,6 +6,7 @@
 package Muistilista.Servlets;
 
 import Muistilista.Models.Kayttaja;
+import Muistilista.Models.Luokka;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -71,6 +72,7 @@ public class Kirjautuminen extends ToistuvaKoodi {
                 naytaJSP("login.jsp", request, response);
             } else {
                 session.setAttribute("kirjautunut", client);
+                session.setAttribute("luokat", Luokka.haeKaikki(kayttaja));
                 response.sendRedirect("Index");
             }
 

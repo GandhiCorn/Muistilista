@@ -85,10 +85,10 @@ public class Askare {
         }
 
     }
-    
-        public static void paivitaAskare(int id, int tarkeys, String nimi, String kayttaja, String luokka) throws NamingException, SQLException {
 
-                String sql = "update askare set tarkeysArvo = ?, nimi = ?, kayttaja = ?, luokka = ? WHERE askareenId = ?";
+    public static void paivitaAskare(int id, int tarkeys, String nimi, String kayttaja, String luokka) throws NamingException, SQLException {
+
+        String sql = "update askare set tarkeysArvo = ?, nimi = ?, kayttaja = ?, luokka = ? WHERE askareenId = ?";
         Connection yhteys = Yhteys.getYhteys();
         PreparedStatement kysely = yhteys.prepareStatement(sql);
         kysely.setInt(1, tarkeys);
@@ -98,7 +98,6 @@ public class Askare {
         kysely.setInt(5, id);
 
         kysely.executeUpdate();
-
 
         kysely.executeUpdate();
         try {
@@ -287,27 +286,22 @@ public class Askare {
     }
 
     /*    public void setAskareenId(String uusiId) {
-    try {
-    setAskareenId(Integer.parseInt(uusiId));
-    } catch (NumberFormatException e) {
-    virheet.put("id", "AskareenIdssä jotain" + uusiId);
-    }
-    }*/
-
+     try {
+     setAskareenId(Integer.parseInt(uusiId));
+     } catch (NumberFormatException e) {
+     virheet.put("id", "AskareenIdssä jotain" + uusiId);
+     }
+     }*/
     public void setNimi1(String uusiNimi) {
         this.nimi = uusiNimi;
     }
 
     public void setNimi2(String uusiNimi) {
-        if (uusiNimi == null) {
-            this.nimi = "pekka";
+        if (uusiNimi.trim().length() == 0) {
+            virheet.put("nimi", "Nimi ei saa olla tyhjä");
         } else {
-            if (uusiNimi.trim().length() == 0) {
-                virheet.put("nimi", "Nimi ei saa olla tyhjä.");
-            } else {
-                this.nimi = uusiNimi;
-                virheet.remove("nimi");
-            }
+            this.nimi = uusiNimi;
+            virheet.remove("nimi");
         }
     }
 
@@ -321,11 +315,13 @@ public class Askare {
     }
 
     public void setTarkeys(String uusiTarkeys) {
-        try {
-            setTarkeys(Integer.parseInt(uusiTarkeys));
-            virheet.remove("tarkeys");
-        } catch (NumberFormatException e) {
-            virheet.put("tarkeys", "Askareen tärkeysarvon tulee olla kokonaisluku.");
+        if (!uusiTarkeys.equals("")) {
+            try {
+                setTarkeys(Integer.parseInt(uusiTarkeys));
+                virheet.remove("tarkeys");
+            } catch (NumberFormatException e) {
+                virheet.put("tarkeys", "Askareen tärkeysarvon tulee olla kokonaisluku.");
+            }
         }
     }
 
@@ -334,11 +330,13 @@ public class Askare {
     }
 
     public void setLuokka2(String luokka) throws NamingException, SQLException {
-        if (!luokka.equals("") && !Luokka.etsi(luokka)) {
-            this.virheet.put("luokka_id", "Luokkaa ei löytynyt tietokannasta");
-        } else {
-            this.luokka = luokka;
-            virheet.remove("luokka_id");
+        if (!luokka.equals("")) {
+            if (!Luokka.etsi(luokka)) {
+                this.virheet.put("luokka_id", "Luokkaa ei löytynyt tietokannasta");
+            } else {
+                this.luokka = luokka;
+                virheet.remove("luokka_id");
+            }
         }
     }
 

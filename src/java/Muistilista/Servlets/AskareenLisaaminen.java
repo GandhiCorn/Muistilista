@@ -44,33 +44,28 @@ public class AskareenLisaaminen extends ToistuvaKoodi {
         HttpSession session = request.getSession();
         Kayttaja kirjautunut = (Kayttaja) session.getAttribute("kirjautunut");
         String kayttaja = kirjautunut.getKayttajatunnus();
-        String askareenId = request.getParameter("askareenId");
+        String luokka = request.getParameter("luokka");
 
         try {
             Askare uusiAskare = new Askare();
-            uusiAskare.setNimi1(request.getParameter("nimi"));
+            uusiAskare.setNimi2(request.getParameter("nimi"));
             uusiAskare.setTarkeys(request.getParameter("tarkeys"));
-            uusiAskare.setLuokka1(request.getParameter("luokka"));
             uusiAskare.setKayttaja(kayttaja);
-
-            try {
-                int numeerinenID = Integer.parseInt(askareenId);
-                uusiAskare.setAskareenId(numeerinenID);
-            } catch (NumberFormatException e) {
+            if (!luokka.equals("tyhja")) {
+                uusiAskare.setLuokka2(request.getParameter("luokka"));
             }
 
             if (uusiAskare.onkoKelvollinen()) {
-                    uusiAskare.lisaaKantaan();
-                    session.setAttribute("ilmoitus", "Askare lisätty onnistuneesti.");
-                    response.sendRedirect("Index");
-
+                uusiAskare.lisaaKantaan();
+                session.setAttribute("ilmoitus", "Askare lisätty onnistuneesti.");
+                response.sendRedirect("Index");
 
             } else {
                 Collection<String> virheet = uusiAskare.getVirheet();
                 request.setAttribute("virheet", virheet);
                 request.setAttribute("askare", uusiAskare);
                 request.setAttribute("luokat", Luokka.haeKaikki(kayttaja));
-                asetaVirhe(virheet.toString(), request);
+                asetaVirhe(virheet, request);
                 naytaJSP("AskareenLisays.jsp", request, response);
             }
 

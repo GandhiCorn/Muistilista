@@ -34,6 +34,10 @@ public class Muokkaus extends ToistuvaKoodi {
         PrintWriter out = response.getWriter();
         HttpSession session = request.getSession();
         String askareenId = request.getParameter("askareenId");
+        String nimi = request.getParameter("nimi").trim();
+        String tarkeys = request.getParameter("tarkeys").trim();
+        String luokka = request.getParameter("luokka");
+        
         int id;
         try {
             id = Integer.parseInt(askareenId);
@@ -41,6 +45,9 @@ public class Muokkaus extends ToistuvaKoodi {
             id = -1;
         }
         session.setAttribute("id", id);
+        request.setAttribute("nimi", nimi);
+        request.setAttribute("tarkeys", tarkeys);
+        request.setAttribute("valittu", luokka);
         naytaJSP("AskareenPaivittaminen.jsp", request, response);
     }
 

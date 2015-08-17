@@ -17,25 +17,20 @@
                 <h2>Tärkeysarvo: </h2>
                 <input type="text" name="tarkeys" value="<c:out value="${tarkeys}"/>" class="form-control" placeholder="Tärkeysarvo">
             </div>
-            <div class="input-group input-group-lg">                
-                <h2>Luokka: </h2>
-                <input type="text" name="luokka" value="<c:out value="${luokka}"/>" class="form-control" placeholder="Luokan nimi">
-            </div>
+            <%--<div class="input-group input-group-lg">                
+            <h2>Luokka: </h2>
+            <input type="text" name="luokka" value="<c:out value="${luokka}"/>" class="form-control" placeholder="Luokan nimi">
+        </div>--%>
 
-            <input type="hidden" name="askareenId" value="${askare.askareenId}">
-
-            <%--<c:forEach var="askare" items="${askareet}">
-                <input type="hidden" name="askareenId" value="${askare.askareenId}">
-            </c:forEach>--%>
-
-            <%--<br/>
-            <br/>
-            <label>Luokka</label>
+            <label><h2>Luokka:</h2</label>
             <select name="luokka">
+                <option value="tyhja">- - -</option>
                 <c:forEach var="luokka" items="${luokat}">
-                    <option value="${luokka.luokkaId}">${luokka.nimi}</option>
+                    <option value="${luokka.nimi}" ${luokka.nimi == valittu ? 'selected="selected"' : ''} > ${luokka.nimi}</option>
                 </c:forEach>
-            </select>--%>
+            </select>
+
+            <br/>
             <div class="btn-group-vertical">
                 <button type="submit" class="btn btn-default">Tallenna</button>
             </div>

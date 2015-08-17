@@ -22,24 +22,14 @@
                 <h2>Tärkeysarvo: </h2>
                 <input type="text" name="tarkeys" value="<c:out value="${tarkeys}"/>" class="form-control" placeholder="Tärkeysarvo">
             </div>
-            <div class="input-group input-group-lg">                
-                <h2>Luokka: </h2>
-                <input type="text" name="luokka" value="<c:out value="${luokka}"/>" class="form-control" placeholder="Luokan nimi">
-            </div>
-            <%--<br/>
-            <br/>
-            <label>Luokka</label>
+            
+            <label><h2>Luokka:</h2</label>
             <select name="luokka">
+                <option value="tyhja">- - -</option>
                 <c:forEach var="luokka" items="${luokat}">
-                    <option value="${luokka.luokkaId}">${luokka.nimi}</option>
+                    <option value="${luokka.nimi}"> ${luokka.nimi}</option>
                 </c:forEach>
-                    <input type="button" value="Test">
-                <input type="text" name="SelectedCity" value="" />
-                <input type="button" onclick="var s = this.form.elements['Luokka'];
-                        this.form.elements['ValittuLuokka'].value = s.options[s.selectedIndex].textContent">
-            </select>--%>
-
-            <input type="hidden" name="askareenId" value="${askareenId}">
+            </select>
 
             <div class="btn-group-vertical">
                 <button type="submit" class="btn btn-default">Luo askare</button>

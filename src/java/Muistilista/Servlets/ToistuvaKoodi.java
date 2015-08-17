@@ -7,6 +7,7 @@ package Muistilista.Servlets;
 
 import Muistilista.Models.Kayttaja;
 import java.io.IOException;
+import java.util.Collection;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -41,6 +42,12 @@ public class ToistuvaKoodi extends HttpServlet {
 
     protected void asetaVirhe(String virhe, HttpServletRequest request) {
         request.setAttribute("pageError", virhe);
+    }
+
+    protected void asetaVirhe(Collection<String> virheet, HttpServletRequest request) {
+        for(String virhe  : virheet) {
+            request.setAttribute("pageError", virhe);
+        }
     }
 
     protected boolean tarkistaKirjautuminen(HttpServletRequest request) {

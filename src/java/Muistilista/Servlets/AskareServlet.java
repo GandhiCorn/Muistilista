@@ -39,12 +39,7 @@ public class AskareServlet extends ToistuvaKoodi {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-
         String askareenId = request.getParameter("id");
-
-        HttpSession session = request.getSession();
-        Kayttaja kirjautunut = (Kayttaja) session.getAttribute("kirjautunut");
-        String kayttaja = kirjautunut.getKayttajatunnus();
 
         int id;
         try {
