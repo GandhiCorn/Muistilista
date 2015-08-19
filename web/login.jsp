@@ -17,6 +17,9 @@
             <c:if test="${pageError != null}">
                 <div class="alert alert-danger">${pageError}</div>
             </c:if>
+            <c:if test="${ilmoitus != null}">
+                <div class="alert alert-info">${ilmoitus}</div>
+            </c:if>
 
             <form action="Kirjautuminen" method="POST">
                 <div class="input-group input-group-lg">
@@ -27,8 +30,11 @@
                     <span class="input-group-addon"></span>
                     <input type="password" name="password" class="form-control" placeholder="*******">
                 </div>
+                <br/>
                 <div class="btn-group">
-                    <button name="subject" type="submit" class="btn btn-default">Kirjaudu</button>
+                    <button name="subject" type="submit" value="login" class="btn btn-default">Kirjaudu</button>
+                    <button name="subject" type="submit" value="newuser" class="btn btn-default">Luo uusi käyttäjä</button>
+
                 </div>
             </form>
         </div>

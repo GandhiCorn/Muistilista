@@ -41,47 +41,97 @@ public class Kirjautuminen extends ToistuvaKoodi {
 
             String salasana = request.getParameter("password");
             String kayttaja = request.getParameter("username");
+            String nappi = request.getParameter("subject");
 
-            //pelkkä lomake
-            if (kayttaja == null || salasana == null) {
-                naytaJSP("login.jsp", request, response);
-                return;
+            if (nappi == null || nappi.equals("login")) {
+                //pelkkä lomake
+                if (kayttaja == null || salasana == null) {
+                    naytaJSP("login.jsp", request, response);
+                    return;
+                }
+
+                //ei käyttäjätunnusta
+                if (kayttaja == null || kayttaja.equals("")) {
+                    asetaVirhe("Kirjautuminen epäonnistui! Et antanut käyttäjätunnusta.", request);
+                    naytaJSP("login.jsp", request, response);
+                    return;
+                }
+
+                //kerrotaan käyttäjätunnus ettei jää tyhjäksi kerran kun on jotain laitettu
+                request.setAttribute("kayttaja", kayttaja);
+                //ei salasanaa
+                if (salasana == null || salasana.equals("")) {
+                    asetaVirhe("Kirjautuminen epäonnistui! Et antanut salasanaa.", request);
+                    naytaJSP("login.jsp", request, response);
+                    return;
+                }
+
+                //tarkistetaan onko käyttäjä olemassa ja välitetään eteenpäin tai annetaan virheilmoitus
+                HttpSession session = request.getSession();
+                Kayttaja client = Kayttaja.etsiKayttajaTunnuksilla(kayttaja, salasana);
+                if (client == null) {
+                    asetaVirhe("Kirjautuminen epäonnistui! Käyttäjää ei löytynyt järjestelmästä", request);
+                    naytaJSP("login.jsp", request, response);
+                } else {
+                    session.setAttribute("kirjautunut", client);
+                    session.setAttribute("luokat", Luokka.haeKaikki(kayttaja));
+                    response.sendRedirect("Index");
+                }
             }
+            else if (nappi.equals("newuser")) {
 
-            //ei käyttäjätunnusta
-            if (kayttaja == null || kayttaja.equals("")) {
-                asetaVirhe("Kirjautuminen epäonnistui! Et antanut käyttäjätunnusta.", request);
-                naytaJSP("login.jsp", request, response);
-                return;
+                /* Näytetään pelkkä lomake */
+                if (kayttaja == null || salasana == null) {
+                    naytaJSP("login.jsp", request, response);
+                    return;
+                }
+
+                if (kayttaja.equals("")) {
+                    asetaVirhe("Uuden käyttäjän luonti epäonnistui! Et antanut käyttäjätunnusta.", request);
+                    naytaJSP("login.jsp", request, response);
+                    return;
+                }
+
+                if (kayttaja.length() > 20) {
+                    asetaVirhe("Uuden käyttäjän luonti epäonnistui! Käyttäjätunnuksen maksimipituus on 20 merkkiä", request);
+                    naytaJSP("login.jsp", request, response);
+                    return;
+                }
+
+                /* Välitetään näkymille tieto siitä, mikä tunnus yritti kirjautumista */
+                request.setAttribute("kayttaja", kayttaja);
+
+                if (salasana.equals("")) {
+                    asetaVirhe("Uuden käyttäjän luonti epäonnistui! Et antanut salasanaa.", request);
+                    naytaJSP("login.jsp", request, response);
+                    return;
+                }
+
+                if (salasana.length() > 20) {
+                    asetaVirhe("Uuden käyttäjän luonti epäonnistui! Salasanan maksimipituus on 20 merkkiä.", request);
+                    naytaJSP("login.jsp", request, response);
+                    return;
+                }
+
+                /* Tarkistetaan onko parametrina saatu oikeat tunnukset */
+                HttpSession session = request.getSession();
+                boolean loytyykoKayttaja = Kayttaja.etsiKayttaja(kayttaja);
+                if (loytyykoKayttaja) {
+                    asetaVirhe("Käyttäjätunnus on varattu. Kokeile toista.", request);
+                    naytaJSP("login.jsp", request, response);
+                    return;
+                } else {
+                    Kayttaja.luoUusiKayttaja(kayttaja, salasana);
+                    session.setAttribute("ilmoitus", "Käyttäjä luotu onnistuneesti. Voit nyt kirjautua sisään.");
+                    naytaJSP("login.jsp", request, response);
+                    return;
+                }
             }
-
-            //kerrotaan käyttäjätunnus ettei jää tyhjäksi kerran kun on jotain laitettu
-            request.setAttribute("kayttaja", kayttaja);
-            //ei salasanaa
-            if (salasana == null || salasana.equals("")) {
-                asetaVirhe("Kirjautuminen epäonnistui! Et antanut salasanaa.", request);
-                naytaJSP("login.jsp", request, response);
-                return;
-            }
-
-            //tarkistetaan onko käyttäjä olemassa ja välitetään eteenpäin tai annetaan virheilmoitus
-            HttpSession session = request.getSession();
-            Kayttaja client = Kayttaja.etsiKayttajaTunnuksilla(kayttaja, salasana);
-            if (client == null) {
-                asetaVirhe("Kirjautuminen epäonnistui! Käyttäjää ei löytynyt järjestelmästä", request);
-                naytaJSP("login.jsp", request, response);
-            } else {
-                session.setAttribute("kirjautunut", client);
-                session.setAttribute("luokat", Luokka.haeKaikki(kayttaja));
-                response.sendRedirect("Index");
-            }
-
         } catch (NamingException ex) {
             Logger.getLogger(Kirjautuminen.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
             Logger.getLogger(Kirjautuminen.class.getName()).log(Level.SEVERE, null, ex);
         }
-
     }
 
 // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
