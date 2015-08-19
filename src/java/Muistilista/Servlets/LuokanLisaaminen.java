@@ -5,8 +5,15 @@
  */
 package Muistilista.Servlets;
 
+import Muistilista.Models.Kayttaja;
+import Muistilista.Models.Luokka;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -17,7 +24,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author fuksi
  */
-public class Muokkaus extends ToistuvaKoodi {
+public class LuokanLisaaminen extends ToistuvaKoodi {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,26 +39,43 @@ public class Muokkaus extends ToistuvaKoodi {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
+
         HttpSession session = request.getSession();
-        String askareenId = request.getParameter("askareenId");
-        String nimi = request.getParameter("nimi").trim();
-        String tarkeys = request.getParameter("tarkeys").trim();
-        String luokka = request.getParameter("luokka");
-        
-        int id;
-        try {
-            id = Integer.parseInt(askareenId);
-        } catch (Exception e) {
-            id = -1;
+        Kayttaja kirjautunut = (Kayttaja) session.getAttribute("kirjautunut");
+        String kayttaja = kirjautunut.getKayttajatunnus();
+
+        Luokka uusiLuokka = new Luokka();
+        uusiLuokka.setKayttaja(kayttaja);
+        uusiLuokka.setNimi(request.getParameter("nimi"));
+
+        if (uusiLuokka.onkoKelvollinen()) {
+            try {
+                uusiLuokka.lisaaKantaan();
+                session.setAttribute("ilmoitus", "Luokka lisätty onnistuneesti");
+                session.setAttribute("luokat", Luokka.haeKaikki(kayttaja));
+                naytaJSP("LuokanLisays.jsp", request, response);
+            } catch (NamingException ex) {
+                Logger.getLogger(LuokanLisaaminen.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(LuokanLisaaminen.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        } else {
+            Collection<String> virheet = uusiLuokka.getVirheet();
+            request.setAttribute("virheet", virheet);
+            try {
+                request.setAttribute("luokat", Luokka.haeKaikki(kayttaja));
+            } catch (NamingException ex) {
+                Logger.getLogger(LuokanLisaaminen.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(LuokanLisaaminen.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            asetaVirhe(virheet, request);
+            naytaJSP("LuokanLisays.jsp", request, response);
         }
-        session.setAttribute("id", id);
-        request.setAttribute("nimi", nimi);
-        request.setAttribute("tarkeys", tarkeys);
-        request.setAttribute("valittu", luokka);
-        naytaJSP("AskareenPaivittaminen.jsp", request, response);
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *

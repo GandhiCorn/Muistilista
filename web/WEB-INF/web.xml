@@ -58,7 +58,31 @@
     </servlet>
     <servlet>
         <servlet-name>Muokkaus</servlet-name>
-        <servlet-class>Muistilista.Servlets.Muokkaus</servlet-class>
+        <servlet-class>Muistilista.Servlets.AskareenMuokkaus</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LuokanLisaaminen</servlet-name>
+        <servlet-class>Muistilista.Servlets.LuokanLisaaminen</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Luokat</servlet-name>
+        <servlet-class>Luokat</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UlosKirjautuminen</servlet-name>
+        <servlet-class>Muistilista.Servlets.UlosKirjautuminen</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LuokanMuokkaus</servlet-name>
+        <servlet-class>Muistilista.Servlets.LuokanMuokkaus</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LuokanPoistaminen</servlet-name>
+        <servlet-class>Muistilista.Servlets.LuokanPoistaminen</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LuokkienTiedot</servlet-name>
+        <servlet-class>Muistilista.Servlets.LuokkienTiedot</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Kokeilu</servlet-name>
@@ -119,6 +143,30 @@
     <servlet-mapping>
         <servlet-name>Muokkaus</servlet-name>
         <url-pattern>/Muokkaus</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LuokanLisaaminen</servlet-name>
+        <url-pattern>/LuokanLisaaminen</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Luokat</servlet-name>
+        <url-pattern>/Luokat</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UlosKirjautuminen</servlet-name>
+        <url-pattern>/UlosKirjautuminen</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LuokanMuokkaus</servlet-name>
+        <url-pattern>/LuokanMuokkaus</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LuokanPoistaminen</servlet-name>
+        <url-pattern>/LuokanPoistaminen</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LuokkienTiedot</servlet-name>
+        <url-pattern>/LuokkienTiedot</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

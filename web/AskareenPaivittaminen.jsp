@@ -17,10 +17,6 @@
                 <h2>Tärkeysarvo: </h2>
                 <input type="text" name="tarkeys" value="<c:out value="${tarkeys}"/>" class="form-control" placeholder="Tärkeysarvo">
             </div>
-            <%--<div class="input-group input-group-lg">                
-            <h2>Luokka: </h2>
-            <input type="text" name="luokka" value="<c:out value="${luokka}"/>" class="form-control" placeholder="Luokan nimi">
-        </div>--%>
 
             <label><h2>Luokka:</h2</label>
             <select name="luokka">

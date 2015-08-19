@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package Muistilista.Servlets;
 
 import Muistilista.Models.Askare;
@@ -11,15 +16,16 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.NamingException;
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author Jyri
+ * @author fuksi
  */
-public class Index extends ToistuvaKoodi {
+public class LuokanPoistaminen extends ToistuvaKoodi {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -30,37 +36,33 @@ public class Index extends ToistuvaKoodi {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    @Override
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-
-        if (tarkistaKirjautuminen(request)) {
-
-            try {
-                HttpSession session = request.getSession();
-                /*                if (!session.getAttribute("ilmoitus").equals("Askare lisätty onnistuneesti.")) {
-                session.removeAttribute("ilmoitus");
-                }   */
-                Kayttaja kirjautunut = (Kayttaja) session.getAttribute("kirjautunut");
-                String kayttaja = kirjautunut.getKayttajatunnus();
-                request.setAttribute("kayttaja", kirjautunut.getKayttajatunnus());
-                List<Askare> askareet = Askare.etsiAskareet(kirjautunut.getKayttajatunnus());
-                session.setAttribute("luokat", Luokka.haeKaikki(kayttaja));
-
-                request.setAttribute("askareet", askareet);
-                request.setAttribute("listanKoko", askareet.size());
-
-            } catch (NamingException ex) {
-                Logger.getLogger(Index.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (SQLException ex) {
-                Logger.getLogger(Index.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } else {
-            asetaVirhe("Kirjautumista ei tunnisteta", request);
+        HttpSession session = request.getSession();
+        Kayttaja kirjautunut = (Kayttaja) session.getAttribute("kirjautunut");
+        String kayttaja = kirjautunut.getKayttajatunnus();
+        String luokanId = request.getParameter("luokanId");
+        int id;
+        try {
+            id = Integer.parseInt(luokanId);
+        } catch (Exception e) {
+            id = -1;
         }
-        naytaJSP("index.jsp", request, response);
+
+        try {
+            String luokanNimi = request.getParameter("nimi");
+            Askare.poistaAskareenLuokka(luokanNimi);
+            Luokka.poistaLuokka(id);
+            request.setAttribute("luokat", Luokka.haeKaikki(kayttaja));
+
+        } catch (NamingException ex) {
+            Logger.getLogger(AskareServlet.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(AskareServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        naytaJSP("Luokat.jsp", request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

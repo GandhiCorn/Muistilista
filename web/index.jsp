@@ -11,10 +11,6 @@
     <div class="bs-example">
         <table class="table">
             <thead>
-
-            <link href="../css/bootstrap.css" rel="stylesheet">
-            <link href="../css/bootstrap-theme.css" rel="stylesheet">
-            <link href="../css/main.css" rel="stylesheet">
             <tr>
                 <th>Askare</th>
                 <th>Tärkeysaste</th>

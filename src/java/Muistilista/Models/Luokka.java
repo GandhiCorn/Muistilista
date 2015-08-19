@@ -10,7 +10,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.naming.NamingException;
 
 /**
@@ -19,6 +22,37 @@ import javax.naming.NamingException;
  */
 public class Luokka {
 
+    public static List<Integer> tyhjennaLuokanAskareet(String kayttaja, int id) throws NamingException, SQLException {
+        String sql = "Select askareenId from askare where kayttajaTunnus = ? and luokkaId = ?";
+        Connection yhteys = Yhteys.getYhteys();
+        PreparedStatement kysely = yhteys.prepareStatement(sql);
+        kysely.setString(1, kayttaja);
+        kysely.setInt(2, id);
+        ResultSet rs = kysely.executeQuery();
+
+        List<Integer> askareet = new ArrayList<Integer>();
+
+        while (rs.next()) {
+            askareet.add((Integer) rs.getObject("askareenId"));
+        }
+
+        try {
+            rs.close();
+        } catch (Exception e) {
+        }
+        try {
+            kysely.close();
+        } catch (Exception e) {
+        }
+        try {
+            yhteys.close();
+        } catch (Exception e) {
+        }
+        
+        return askareet;
+    }
+
+    private Map<String, String> virheet = new HashMap<String, String>();
     private String nimi;
     private int luokkaId;
     private String kayttaja;
@@ -71,6 +105,51 @@ public class Luokka {
         return luokat;
     }
 
+    public static void poistaLuokka(int id) throws NamingException, SQLException {
+
+        String sql = "delete from luokka where luokkaId = ?";
+        Connection yhteys = Yhteys.getYhteys();
+        PreparedStatement kysely = yhteys.prepareStatement(sql);
+        kysely.setInt(1, id);
+
+        kysely.executeUpdate();
+        try {
+            kysely.close();
+        } catch (Exception e) {
+        }
+        try {
+            yhteys.close();
+        } catch (Exception e) {
+        }
+    }
+
+    public void lisaaKantaan() throws NamingException, SQLException {
+        String sql = "insert into luokka (nimi, kayttaja) values (?,?) RETURNING luokkaid";
+        Connection yhteys = Yhteys.getYhteys();
+        PreparedStatement kysely = yhteys.prepareStatement(sql);
+        kysely.setString(1, this.getNimi());
+        kysely.setString(2, this.getKayttaja());
+
+        ResultSet ids = kysely.executeQuery();
+        ids.next();
+
+        this.luokkaId = ids.getInt(1);
+
+        try {
+            ids.close();
+        } catch (Exception e) {
+        }
+        try {
+            kysely.close();
+        } catch (Exception e) {
+        }
+        try {
+            yhteys.close();
+        } catch (Exception e) {
+        }
+
+    }
+
     public static boolean etsi(String luokanNimi) throws NamingException, SQLException {
         String sql = "SELECT nimi from luokka where nimi = ?";
         Connection yhteys = Yhteys.getYhteys();
@@ -117,7 +196,12 @@ public class Luokka {
     }
 
     public void setNimi(String uusiNimi) {
-        this.nimi = uusiNimi;
+        if (uusiNimi.trim().length() == 0) {
+            virheet.put("nimi", "Nimi ei saa olla tyhjä");
+        } else {
+            this.nimi = uusiNimi;
+            virheet.remove("nimi");
+        }
     }
 
     public int getLuokkaId() {
@@ -126,5 +210,13 @@ public class Luokka {
 
     public void setLuokkaId(int uusiId) {
         this.luokkaId = uusiId;
+    }
+
+    public boolean onkoKelvollinen() {
+        return this.virheet.isEmpty();
+    }
+
+    public Collection<String> getVirheet() {
+        return virheet.values();
     }
 }

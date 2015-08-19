@@ -91,6 +91,55 @@ public class Kayttaja {
 
         return kayttajat;
     }
+    
+        public static boolean etsiKayttaja(String kayttaja) throws NamingException, SQLException {
+        String sql = "SELECT kayttajatunnus from kayttaja where kayttajatunnus = ?";
+        Connection yhteys = Yhteys.getYhteys();
+        PreparedStatement kysely = yhteys.prepareStatement(sql);
+        kysely.setString(1, kayttaja);
+        ResultSet rs = kysely.executeQuery();
+        
+        Kayttaja uusiKayttaja = null;
+
+        if (rs.next()) {
+            uusiKayttaja = new Kayttaja();
+        }
+        
+        try {
+            rs.close();
+        } catch (Exception e) {
+        }
+        try {
+            kysely.close();
+        } catch (Exception e) {
+        }
+        try {
+            yhteys.close();
+        } catch (Exception e) {
+        }
+
+        return uusiKayttaja != null;
+    }
+    
+    public static void luoUusiKayttaja(String kayttajaTunnus, String salasana) throws NamingException, SQLException{
+        
+        String sql = " insert into kayttaja (kayttajatunnus, salasana) values (?,?)";
+        Connection yhteys = Yhteys.getYhteys();
+        PreparedStatement kysely = yhteys.prepareStatement(sql);
+        kysely.setString(1, kayttajaTunnus);
+        kysely.setString(2, salasana);
+
+        kysely.executeUpdate();
+
+        try {
+            kysely.close();
+        } catch (Exception e) {
+        }
+        try {
+            yhteys.close();
+        } catch (Exception e) {
+        }
+    }
 
     public String getKayttajatunnus() {
         return this.kayttajatunnus;

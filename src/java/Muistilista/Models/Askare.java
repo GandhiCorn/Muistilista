@@ -22,6 +22,27 @@ import javax.naming.NamingException;
  */
 public class Askare {
 
+    public static void poistaAskareenLuokka(String nimi) throws NamingException, SQLException {
+
+        String sql = "update askare set luokka = ? where luokka = ?";
+        Connection yhteys = Yhteys.getYhteys();
+        PreparedStatement kysely = yhteys.prepareStatement(sql);
+        kysely.setString(1, null);
+        kysely.setString(2, nimi);
+
+        kysely.executeUpdate();
+
+        try {
+            kysely.close();
+        } catch (Exception e) {
+        }
+        try {
+            yhteys.close();
+        } catch (Exception e) {
+        }
+
+    }
+
     private Map<String, String> virheet = new HashMap<String, String>();
     private String nimi;
     private int tarkeys;
@@ -39,28 +60,6 @@ public class Askare {
         this.tarkeys = tarkeys;
         this.kayttaja = kayttaja;
 
-    }
-
-    public static void luoUusiAskare(Askare askare) throws NamingException, SQLException {
-        String sql = "insert into askare (askareenid, tarkeysarvo, nimi, kayttaja, luokka) values (?,?,?,?,?) RETURNING askareenid";
-        Connection yhteys = Yhteys.getYhteys();
-        PreparedStatement kysely = yhteys.prepareStatement(sql);
-        kysely.setInt(1, askare.askareenId);
-        kysely.setInt(2, askare.tarkeys);
-        kysely.setString(3, askare.nimi);
-        kysely.setString(4, askare.kayttaja);
-        kysely.setString(5, askare.luokka);
-
-        kysely.executeUpdate();
-
-        try {
-            kysely.close();
-        } catch (Exception e) {
-        }
-        try {
-            yhteys.close();
-        } catch (Exception e) {
-        }
     }
 
     public void paivitaAskare() throws NamingException, SQLException {
@@ -86,31 +85,30 @@ public class Askare {
 
     }
 
-    public static void paivitaAskare(int id, int tarkeys, String nimi, String kayttaja, String luokka) throws NamingException, SQLException {
-
-        String sql = "update askare set tarkeysArvo = ?, nimi = ?, kayttaja = ?, luokka = ? WHERE askareenId = ?";
-        Connection yhteys = Yhteys.getYhteys();
-        PreparedStatement kysely = yhteys.prepareStatement(sql);
-        kysely.setInt(1, tarkeys);
-        kysely.setString(2, nimi);
-        kysely.setString(3, kayttaja);
-        kysely.setString(4, luokka);
-        kysely.setInt(5, id);
-
-        kysely.executeUpdate();
-
-        kysely.executeUpdate();
-        try {
-            kysely.close();
-        } catch (Exception e) {
-        }
-        try {
-            yhteys.close();
-        } catch (Exception e) {
-        }
-
-    }
-
+    /*    public static void paivitaAskare(int id, int tarkeys, String nimi, String kayttaja, String luokka) throws NamingException, SQLException {
+    
+     String sql = "update askare set tarkeysArvo = ?, nimi = ?, kayttaja = ?, luokka = ? WHERE askareenId = ?";
+     Connection yhteys = Yhteys.getYhteys();
+     PreparedStatement kysely = yhteys.prepareStatement(sql);
+     kysely.setInt(1, tarkeys);
+     kysely.setString(2, nimi);
+     kysely.setString(3, kayttaja);
+     kysely.setString(4, luokka);
+     kysely.setInt(5, id);
+    
+     kysely.executeUpdate();
+    
+     kysely.executeUpdate();
+     try {
+     kysely.close();
+     } catch (Exception e) {
+     }
+     try {
+     yhteys.close();
+     } catch (Exception e) {
+     }
+    
+     }*/
     public static void poistaAskare(int id) throws NamingException, SQLException {
 
         String sql = "delete from askare where askareenId = ?";

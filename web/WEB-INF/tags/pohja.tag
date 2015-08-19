@@ -15,9 +15,9 @@
             <h1>Muistilista</h1>
         </div>
         <ul class="nav nav-tabs" role="tablist">
-            <li><a href="IndexServlet">Etusivu</a></li>           
-            <li><a href="ClassServlet">Luokat</a></li>
-            <li><a href="Logout">Kirjaudu ulos</a></li>
+            <li><a href="Index">Etusivu</a></li>           
+            <li><a href="LuokkienTiedot">Luokat</a></li>
+            <li><a href="UlosKirjautuminen">Kirjaudu ulos</a></li>
         </ul>
 
         <div class="container">

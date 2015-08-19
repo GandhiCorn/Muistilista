@@ -56,18 +56,19 @@ public class AskareServlet extends ToistuvaKoodi {
             Logger.getLogger(AskareServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
         response.sendRedirect("Index");
-        /*
-         try {
-         request.setAttribute("luokat", Luokka.haeKaikki(kayttaja));
-         } catch (NamingException ex) {
-         Logger.getLogger(AskareServlet.class.getName()).log(Level.SEVERE, null, ex);
-         } catch (SQLException ex) {
-         Logger.getLogger(AskareServlet.class.getName()).log(Level.SEVERE, null, ex);
-         }
-         naytaJSP("AskareenLisays.jsp", request, response);*/
-    }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    }
+    /*
+     try {
+     request.setAttribute("luokat", Luokka.haeKaikki(kayttaja));
+     } catch (NamingException ex) {
+     Logger.getLogger(AskareServlet.class.getName()).log(Level.SEVERE, null, ex);
+     } catch (SQLException ex) {
+     Logger.getLogger(AskareServlet.class.getName()).log(Level.SEVERE, null, ex);
+     }
+     naytaJSP("AskareenLisays.jsp", request, response);*/
+
+// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *

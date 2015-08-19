@@ -53,8 +53,9 @@ public class AskareenPaivittaminen extends ToistuvaKoodi {
 
             if (uusiAskare.onkoKelvollinen()) {
                 uusiAskare.paivitaAskare();
-                session.setAttribute("ilmoitus", "Askare muokkaus onnistui!");
+                session.setAttribute("ilmoitus", "Askareen muokkaus onnistui!");
                 response.sendRedirect("Index");
+                
 
             } else {
                 Collection<String> virheet = uusiAskare.getVirheet();
