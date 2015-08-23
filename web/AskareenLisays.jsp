@@ -4,12 +4,9 @@
     Author     : fuksi
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@page contentType="text/html" pageEncoding="UTF-8" trimDirectiveWhitespaces="true" %>
+<%@ page contentType="text/html" pageEncoding="UTF-8" trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <t:pohja pageTitle="Muistilista"> 
-
-
-
 
     <div class="bs-example">
 
@@ -35,10 +32,5 @@
                 <button type="submit" class="btn btn-default">Luo askare</button>
             </div>
         </form>
-
-
-
-
-
     </div>
 </t:pohja>
