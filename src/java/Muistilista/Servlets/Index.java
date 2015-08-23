@@ -15,10 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-/**
- *
- * @author Jyri
- */
+//Etusivu näkymän servlet
 public class Index extends ToistuvaKoodi {
 
     /**
@@ -36,13 +33,12 @@ public class Index extends ToistuvaKoodi {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
 
+        //jos kirjautuminen on ok listataan käyttäjän askareet ja näytetään etusivun JSP
         if (tarkistaKirjautuminen(request)) {
 
             try {
                 HttpSession session = request.getSession();
-                /*                if (!session.getAttribute("ilmoitus").equals("Askare lisätty onnistuneesti.")) {
-                session.removeAttribute("ilmoitus");
-                }   */
+
                 Kayttaja kirjautunut = (Kayttaja) session.getAttribute("kirjautunut");
                 String kayttaja = kirjautunut.getKayttajatunnus();
                 request.setAttribute("kayttaja", kirjautunut.getKayttajatunnus());

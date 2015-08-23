@@ -19,10 +19,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-/**
- *
- * @author fuksi
- */
+
+//välitetänn luokkientiedot niitä kaipaaville
 public class LuokkienTiedot extends ToistuvaKoodi {
 
     /**
@@ -38,11 +36,14 @@ public class LuokkienTiedot extends ToistuvaKoodi {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
+        
+        //haetaan sessio ja käyttäjä sekä poistetaan ilmoitus
         HttpSession session = request.getSession();
         session.removeAttribute("ilmoitus");
         Kayttaja kirjautunut = (Kayttaja) session.getAttribute("kirjautunut");
         String kayttaja = kirjautunut.getKayttajatunnus();
 
+        //haetaan käyttäjän kaikki luokat
         try {
             request.setAttribute("luokat", Luokka.haeKaikki(kayttaja));
         } catch (NamingException ex) {
@@ -50,6 +51,8 @@ public class LuokkienTiedot extends ToistuvaKoodi {
         } catch (SQLException ex) {
             Logger.getLogger(LuokanLisaaminen.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        //näytetään luokkien perusnäkymä
         naytaJSP("Luokat.jsp", request, response);
 
     }

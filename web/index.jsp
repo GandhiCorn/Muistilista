@@ -24,7 +24,7 @@
                                &tarkeys=${askare.tarkeys}&luokka=${askare.luokka}"><c:out value="${askare.nimi}"/></a></td>
                         <td><c:out value="${askare.tarkeys}"/></td>                        
                         <td><c:out value="${askare.luokka}"/></td>
-                        <td><a href="AskareServlet?id=${askare.askareenId}"<button type="submit" class="btn btn-xs btn-default"><span class="col-md-offset-0 col-md-1"></span> POISTA</button></a></td>
+                        <td><a href="AskareenPoistaminen?id=${askare.askareenId}"<button type="submit" class="btn btn-xs btn-default"><span class="col-md-offset-0 col-md-1"></span> POISTA</button></a></td>
                     </tr>
                 </c:forEach>
             </tbody>

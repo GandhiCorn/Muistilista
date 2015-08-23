@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Muistilista.Servlets;
 
 import Muistilista.Models.Kayttaja;
@@ -19,10 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-/**
- *
- * @author fuksi
- */
+//Kirjautuminen ja rekisteröityminen
 public class Kirjautuminen extends ToistuvaKoodi {
 
     /**
@@ -43,6 +35,7 @@ public class Kirjautuminen extends ToistuvaKoodi {
             String kayttaja = request.getParameter("username");
             String nappi = request.getParameter("subject");
 
+            //jos nappia ei paineta jatketaan tänne tai jos napin arvo oli login
             if (nappi == null || nappi.equals("login")) {
                 //pelkkä lomake
                 if (kayttaja == null || salasana == null) {
@@ -53,6 +46,12 @@ public class Kirjautuminen extends ToistuvaKoodi {
                 //ei käyttäjätunnusta
                 if (kayttaja == null || kayttaja.equals("")) {
                     asetaVirhe("Kirjautuminen epäonnistui! Et antanut käyttäjätunnusta.", request);
+                    naytaJSP("login.jsp", request, response);
+                    return;
+                }
+
+                if (kayttaja.length() > 20) {
+                    asetaVirhe("Uuden käyttäjän luonti epäonnistui! Käyttäjätunnuksen maksimipituus on 20 merkkiä", request);
                     naytaJSP("login.jsp", request, response);
                     return;
                 }
@@ -77,43 +76,47 @@ public class Kirjautuminen extends ToistuvaKoodi {
                     session.setAttribute("luokat", Luokka.haeKaikki(kayttaja));
                     response.sendRedirect("Index");
                 }
-            }
+            } //jos taas napin arvo oli newuser eli luo uusi käyttäjä nappia on painettu
             else if (nappi.equals("newuser")) {
 
-                /* Näytetään pelkkä lomake */
+                //näytetään ensin pelkkä lomake
                 if (kayttaja == null || salasana == null) {
                     naytaJSP("login.jsp", request, response);
                     return;
                 }
 
+                //jos käyttäjää ei olltu syötetty
                 if (kayttaja.equals("")) {
                     asetaVirhe("Uuden käyttäjän luonti epäonnistui! Et antanut käyttäjätunnusta.", request);
                     naytaJSP("login.jsp", request, response);
                     return;
                 }
 
+                //jos käyttäjä tunnuksen nimen pituus on yli maksimiarvon
                 if (kayttaja.length() > 20) {
                     asetaVirhe("Uuden käyttäjän luonti epäonnistui! Käyttäjätunnuksen maksimipituus on 20 merkkiä", request);
                     naytaJSP("login.jsp", request, response);
                     return;
                 }
 
-                /* Välitetään näkymille tieto siitä, mikä tunnus yritti kirjautumista */
+                //asetetaan hyväksytty käyttäjänimi, jottei sitä tarvitse syöttää uudestaan
                 request.setAttribute("kayttaja", kayttaja);
 
+                //jos salasana on tyhjä
                 if (salasana.equals("")) {
                     asetaVirhe("Uuden käyttäjän luonti epäonnistui! Et antanut salasanaa.", request);
                     naytaJSP("login.jsp", request, response);
                     return;
                 }
 
+                //jos salasana on liian pitkä
                 if (salasana.length() > 20) {
                     asetaVirhe("Uuden käyttäjän luonti epäonnistui! Salasanan maksimipituus on 20 merkkiä.", request);
                     naytaJSP("login.jsp", request, response);
                     return;
                 }
 
-                /* Tarkistetaan onko parametrina saatu oikeat tunnukset */
+                //tarkistetaan ettei käyttäjää ole jo olemassa
                 HttpSession session = request.getSession();
                 boolean loytyykoKayttaja = Kayttaja.etsiKayttaja(kayttaja);
                 if (loytyykoKayttaja) {
@@ -121,6 +124,7 @@ public class Kirjautuminen extends ToistuvaKoodi {
                     naytaJSP("login.jsp", request, response);
                     return;
                 } else {
+                    //luodaan uusi käyttäjä ja lisätään se tietokantaan
                     Kayttaja.luoUusiKayttaja(kayttaja, salasana);
                     session.setAttribute("ilmoitus", "Käyttäjä luotu onnistuneesti. Voit nyt kirjautua sisään.");
                     naytaJSP("login.jsp", request, response);

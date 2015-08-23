@@ -1,17 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Muistilista.Servlets;
 
-import Muistilista.Models.Yhteys;
+import Muistilista.Models.Kayttaja;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.NamingException;
@@ -24,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author fuksi
  */
-public class toimiiko extends HttpServlet {
+public class HARJOITUS_II extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,34 +29,29 @@ public class toimiiko extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-//HttpServlet-luokan perivään servlettiin menevä metodi:
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, NamingException, SQLException {
-        Connection yhteys = Yhteys.getYhteys(); //Haetaan tietokantaluokalta yhteysolio
-        PreparedStatement kysely = null;
-        ResultSet tulokset = null;
+        response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        response.setContentType("text/plain;charset=UTF-8");
-
+        List<Kayttaja> kayttajat = Kayttaja.getKayttajat();
         try {
-            //Alustetaan muuttuja jossa on Select-kysely, joka palauttaa lukuarvon:
-            String sqlkysely = "SELECT 1+1 as two";
-
-            kysely = yhteys.prepareStatement(sqlkysely);
-            tulokset = kysely.executeQuery();
-            if (tulokset.next()) {
-                //Tuloksen arvoksi pitäisi tulla numero kaksi.
-                int tulos = tulokset.getInt("two");
-                out.println("Tulos: " + tulos);
-            } else {
-                out.println("Virhe!");
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet getKayttajat</title>");
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<ul>");
+            for (Kayttaja k : kayttajat) {
+                out.println("<li>" + k.getKayttajatunnus() + "</li>");
             }
-        } catch (Exception e) {
-            out.println("Virhe: " + e.getMessage());
+            out.println("</ul>");
+            out.println("</body>");
+            out.println("</html>");
+        } finally {
+            out.close();
         }
-
-        tulokset.close();
-        kysely.close();
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -80,9 +69,9 @@ public class toimiiko extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (NamingException ex) {
-            Logger.getLogger(toimiiko.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(HARJOITUS_II.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
-            Logger.getLogger(toimiiko.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(HARJOITUS_II.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -100,9 +89,9 @@ public class toimiiko extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (NamingException ex) {
-            Logger.getLogger(toimiiko.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(HARJOITUS_II.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
-            Logger.getLogger(toimiiko.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(HARJOITUS_II.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Muistilista.Servlets;
 
 import Muistilista.Models.Kayttaja;
@@ -20,10 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-/**
- *
- * @author fuksi
- */
+//Luokan lisäämisen servlet
 public class LuokanLisaaminen extends ToistuvaKoodi {
 
     /**
@@ -40,26 +32,30 @@ public class LuokanLisaaminen extends ToistuvaKoodi {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
 
+        //haetaan käyttäjä
         HttpSession session = request.getSession();
         Kayttaja kirjautunut = (Kayttaja) session.getAttribute("kirjautunut");
         String kayttaja = kirjautunut.getKayttajatunnus();
 
+        //alustetaan luotava luokka olio
         Luokka uusiLuokka = new Luokka();
         uusiLuokka.setKayttaja(kayttaja);
         uusiLuokka.setNimi(request.getParameter("nimi"));
 
+        //mikäli luokka on virheetön niin lisätään en kantaan 
         if (uusiLuokka.onkoKelvollinen()) {
             try {
                 uusiLuokka.lisaaKantaan();
                 session.setAttribute("ilmoitus", "Luokka lisätty onnistuneesti");
                 session.setAttribute("luokat", Luokka.haeKaikki(kayttaja));
-                naytaJSP("LuokanLisays.jsp", request, response);
+                naytaJSP("Luokat.jsp", request, response);
             } catch (NamingException ex) {
                 Logger.getLogger(LuokanLisaaminen.class.getName()).log(Level.SEVERE, null, ex);
             } catch (SQLException ex) {
                 Logger.getLogger(LuokanLisaaminen.class.getName()).log(Level.SEVERE, null, ex);
             }
 
+            //muuten näytetään virheet ja näytetään sama JSP
         } else {
             Collection<String> virheet = uusiLuokka.getVirheet();
             request.setAttribute("virheet", virheet);

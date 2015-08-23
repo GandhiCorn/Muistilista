@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Muistilista.Servlets;
 
 import Muistilista.Models.Askare;
@@ -41,8 +36,12 @@ public class LuokanPoistaminen extends ToistuvaKoodi {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         HttpSession session = request.getSession();
+        
+        //haetaan käyttäjä
         Kayttaja kirjautunut = (Kayttaja) session.getAttribute("kirjautunut");
         String kayttaja = kirjautunut.getKayttajatunnus();
+        
+        //haetaan parametrin id ja parsetaan se
         String luokanId = request.getParameter("luokanId");
         int id;
         try {
@@ -51,6 +50,8 @@ public class LuokanPoistaminen extends ToistuvaKoodi {
             id = -1;
         }
 
+        //Ensin poistetaan kaikilta luokan askareilta luokkatieto jottei ne poistu luokan mukana
+        //jonka jälkeen poistetaan itse luokka
         try {
             String luokanNimi = request.getParameter("nimi");
             Askare.poistaAskareenLuokka(luokanNimi);
@@ -58,10 +59,11 @@ public class LuokanPoistaminen extends ToistuvaKoodi {
             request.setAttribute("luokat", Luokka.haeKaikki(kayttaja));
 
         } catch (NamingException ex) {
-            Logger.getLogger(AskareServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AskareenPoistaminen.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
-            Logger.getLogger(AskareServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AskareenPoistaminen.class.getName()).log(Level.SEVERE, null, ex);
         }
+        //näytetään luokkanäkymän JSP
         naytaJSP("Luokat.jsp", request, response);
     }
 

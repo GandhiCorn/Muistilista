@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Muistilista.Servlets;
 
 import Muistilista.Models.Kayttaja;
@@ -15,10 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-/**
- *
- * @author fuksi
- */
+//Toistuvaa koodia sisältävä luokka jonka muut servletit perii
 public class ToistuvaKoodi extends HttpServlet {
 
     /**
@@ -40,33 +33,39 @@ public class ToistuvaKoodi extends HttpServlet {
         dispatcher.forward(request, response);
     }
 
+    //asetetaan virhe
     protected void asetaVirhe(String virhe, HttpServletRequest request) {
         request.setAttribute("pageError", virhe);
     }
 
+    //asetetaan useampi virhe kerralla
     protected void asetaVirhe(Collection<String> virheet, HttpServletRequest request) {
         for(String virhe  : virheet) {
             request.setAttribute("pageError", virhe);
         }
     }
 
+    //tarkistetaan onko käyttäjä kirjautunut sisään
     protected boolean tarkistaKirjautuminen(HttpServletRequest request) {
         HttpSession session = request.getSession();
         Kayttaja kirjautunut = (Kayttaja) session.getAttribute("kirjautunut");
         return kirjautunut != null;
     }
 
+    //tarkistetaan vastaako käyttäjänimi kirjautuneen käyttäjänimeä
     protected String tarkistaKayttajanimi(HttpServletRequest request) {
         HttpSession session = request.getSession();
         Kayttaja kirjautunut = (Kayttaja) session.getAttribute("kirjautunut");
         return kirjautunut.getKayttajatunnus();
     }
 
+    //kirjaudutaan ulos 
     protected void kirjauduUlos(HttpServletRequest request) {
         HttpSession session = request.getSession();
         session.removeAttribute("kirjautunut");
     }
 
+    //haetaan ilmoitus jos sellainen on olemassa
     protected void haeIlmoitus(HttpServletRequest request) {
         HttpSession session = request.getSession();
         String ilmoitus = (String) session.getAttribute("ilmoitus");
@@ -80,6 +79,7 @@ public class ToistuvaKoodi extends HttpServlet {
         }
     }
 
+    //haetaan kayttaja
     protected String haeKayttaja(HttpServletRequest request) {
 
         HttpSession session = request.getSession();

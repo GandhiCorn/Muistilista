@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Muistilista.Servlets;
 
 import java.io.IOException;
@@ -13,10 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-/**
- *
- * @author fuksi
- */
+
 public class AskareenMuokkaus extends ToistuvaKoodi {
 
     /**
@@ -33,16 +25,22 @@ public class AskareenMuokkaus extends ToistuvaKoodi {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         HttpSession session = request.getSession();
+        
+        //haetaan näkymältä täytetyt parametrit 
         String askareenId = request.getParameter("askareenId");
         String nimi = request.getParameter("nimi").trim();
         String tarkeys = request.getParameter("tarkeys").trim();
         String luokka = request.getParameter("luokka");
+        
+        //parsetaan string tyyppinen id 
         int id;
         try {
             id = Integer.parseInt(askareenId);
         } catch (Exception e) {
             id = -1;
         }
+        
+        //asetetaan parametrit takaisin ja näytetään JSP päivittämiselleu
         session.setAttribute("id", id);
         request.setAttribute("nimi", nimi);
         request.setAttribute("tarkeys", tarkeys);

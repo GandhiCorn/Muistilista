@@ -1,29 +1,18 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Muistilista.Servlets;
 
 import Muistilista.Models.Askare;
-import Muistilista.Models.Kayttaja;
-import Muistilista.Models.Luokka;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
-/**
- *
- * @author fuksi
- */
+//Serlvet askareen poistamiselle tietokannasta
 public class AskareenPoistaminen extends ToistuvaKoodi {
 
     /**
@@ -41,6 +30,7 @@ public class AskareenPoistaminen extends ToistuvaKoodi {
         PrintWriter out = response.getWriter();
         String askareenId = request.getParameter("id");
 
+        //Parsetaan string tyyppinen parametrina saatu id
         int id;
         try {
             id = Integer.parseInt(askareenId);
@@ -56,18 +46,11 @@ public class AskareenPoistaminen extends ToistuvaKoodi {
             Logger.getLogger(AskareenPoistaminen.class.getName()).log(Level.SEVERE, null, ex);
         }
         response.sendRedirect("Index");
-        /*
-         try {
-         request.setAttribute("luokat", Luokka.haeKaikki(kayttaja));
-         } catch (NamingException ex) {
-         Logger.getLogger(AskareServlet.class.getName()).log(Level.SEVERE, null, ex);
-         } catch (SQLException ex) {
-         Logger.getLogger(AskareServlet.class.getName()).log(Level.SEVERE, null, ex);
-         }
-         naytaJSP("AskareenLisays.jsp", request, response);*/
+
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+
+// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *

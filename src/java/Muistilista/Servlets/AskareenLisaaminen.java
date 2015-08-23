@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Muistilista.Servlets;
 
 import Muistilista.Models.Askare;
@@ -21,10 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-/**
- *
- * @author fuksi
- */
+//Servlet askareen lisäämistä tietokantaa varten
 public class AskareenLisaaminen extends ToistuvaKoodi {
 
     /**
@@ -46,6 +38,7 @@ public class AskareenLisaaminen extends ToistuvaKoodi {
         String kayttaja = kirjautunut.getKayttajatunnus();
         String luokka = request.getParameter("luokka");
 
+        //Alustetaan askare olio näkymältä saaduilla parametreilla
         try {
             Askare uusiAskare = new Askare();
             uusiAskare.setNimi2(request.getParameter("nimi"));
@@ -54,12 +47,15 @@ public class AskareenLisaaminen extends ToistuvaKoodi {
             if (!luokka.equals("tyhja")) {
                 uusiAskare.setLuokka2(request.getParameter("luokka"));
             }
-
+            
+            //Jos alustaminen ei tuottanut virheitä, niin kutsutaan metodia lisäämään olio kantaan
             if (uusiAskare.onkoKelvollinen()) {
                 uusiAskare.lisaaKantaan();
                 session.setAttribute("ilmoitus", "Askare lisätty onnistuneesti.");
                 response.sendRedirect("Index");
 
+                //Muuten asetetaan virheet, askareen tiedot ja haetaan luokat sekä asetaan virheviesti
+                //ja näytetään näkymä uudestaan
             } else {
                 Collection<String> virheet = uusiAskare.getVirheet();
                 request.setAttribute("virheet", virheet);

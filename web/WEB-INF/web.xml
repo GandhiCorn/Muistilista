@@ -34,11 +34,11 @@
     </servlet>
     <servlet>
         <servlet-name>toimiiko</servlet-name>
-        <servlet-class>Muistilista.Servlets.toimiiko</servlet-class>
+        <servlet-class>Muistilista.Servlets.HARJOITUS_I</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>getKayttajat</servlet-name>
-        <servlet-class>Muistilista.Servlets.getKayttajat</servlet-class>
+        <servlet-class>Muistilista.Servlets.HARJOITUS_II</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>Askare</servlet-name>
@@ -47,10 +47,6 @@
     <servlet>
         <servlet-name>AskareenLisaaminen</servlet-name>
         <servlet-class>Muistilista.Servlets.AskareenLisaaminen</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>AskareServlet</servlet-name>
-        <servlet-class>Muistilista.Servlets.AskareenPoistaminen</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>AskareenPaivittaminen</servlet-name>
@@ -131,10 +127,6 @@
     <servlet-mapping>
         <servlet-name>AskareenLisaaminen</servlet-name>
         <url-pattern>/AskareenLisaaminen</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>AskareServlet</servlet-name>
-        <url-pattern>/AskareServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AskareenPaivittaminen</servlet-name>

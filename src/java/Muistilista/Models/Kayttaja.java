@@ -1,6 +1,5 @@
 package Muistilista.Models;
 
-// Käyttäjän konstruktorit ja getterit sekä setteri
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -24,7 +23,7 @@ public class Kayttaja {
         this.salasana = salasana;
     }
 
-
+    //Palautetaan käyttäjä olio tietokannasta mikäli parametreja vastaava käyttäjä löytyy
     public static Kayttaja etsiKayttajaTunnuksilla(String kayttaja, String salasana) throws NamingException, SQLException {
         String sql = "SELECT kayttajatunnus, salasana from kayttaja where kayttajatunnus = ? AND salasana = ?";
         Connection yhteys = Yhteys.getYhteys();
@@ -60,6 +59,7 @@ public class Kayttaja {
         return kirjautunut;
     }
 
+    //Listaustestiä varten jokaisen tietokannan käyttäjän listaaminen
     public static List<Kayttaja> getKayttajat() throws NamingException, SQLException {
         String sql = "SELECT kayttajatunnus, salasana from kayttaja";
         Connection yhteys = Yhteys.getYhteys();
@@ -91,20 +91,22 @@ public class Kayttaja {
 
         return kayttajat;
     }
-    
-        public static boolean etsiKayttaja(String kayttaja) throws NamingException, SQLException {
+
+    //palautetaan boolean arvo sille onko tietokannassa parametrin mukana tulevan käyttäjätunnuksen
+    //omaavaa käyttäjää.
+    public static boolean etsiKayttaja(String kayttaja) throws NamingException, SQLException {
         String sql = "SELECT kayttajatunnus from kayttaja where kayttajatunnus = ?";
         Connection yhteys = Yhteys.getYhteys();
         PreparedStatement kysely = yhteys.prepareStatement(sql);
         kysely.setString(1, kayttaja);
         ResultSet rs = kysely.executeQuery();
-        
+
         Kayttaja uusiKayttaja = null;
 
         if (rs.next()) {
             uusiKayttaja = new Kayttaja();
         }
-        
+
         try {
             rs.close();
         } catch (Exception e) {
@@ -120,9 +122,10 @@ public class Kayttaja {
 
         return uusiKayttaja != null;
     }
-    
-    public static void luoUusiKayttaja(String kayttajaTunnus, String salasana) throws NamingException, SQLException{
-        
+
+    //Lisätään tietokantaan parametrit omaava käyttäjä
+    public static void luoUusiKayttaja(String kayttajaTunnus, String salasana) throws NamingException, SQLException {
+
         String sql = " insert into kayttaja (kayttajatunnus, salasana) values (?,?)";
         Connection yhteys = Yhteys.getYhteys();
         PreparedStatement kysely = yhteys.prepareStatement(sql);
@@ -148,7 +151,6 @@ public class Kayttaja {
     public String getSalasana() {
         return this.salasana;
     }
-
 
     public void setKayttajatunnus(String kayttajatunnus) {
         this.kayttajatunnus = kayttajatunnus;

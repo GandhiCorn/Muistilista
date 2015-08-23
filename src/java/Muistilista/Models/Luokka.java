@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Muistilista.Models;
 
 import java.sql.Connection;
@@ -22,43 +18,12 @@ import javax.naming.NamingException;
  */
 public class Luokka {
 
-    public static List<Integer> tyhjennaLuokanAskareet(String kayttaja, int id) throws NamingException, SQLException {
-        String sql = "Select askareenId from askare where kayttajaTunnus = ? and luokkaId = ?";
-        Connection yhteys = Yhteys.getYhteys();
-        PreparedStatement kysely = yhteys.prepareStatement(sql);
-        kysely.setString(1, kayttaja);
-        kysely.setInt(2, id);
-        ResultSet rs = kysely.executeQuery();
-
-        List<Integer> askareet = new ArrayList<Integer>();
-
-        while (rs.next()) {
-            askareet.add((Integer) rs.getObject("askareenId"));
-        }
-
-        try {
-            rs.close();
-        } catch (Exception e) {
-        }
-        try {
-            kysely.close();
-        } catch (Exception e) {
-        }
-        try {
-            yhteys.close();
-        } catch (Exception e) {
-        }
-        
-        return askareet;
-    }
-
     private Map<String, String> virheet = new HashMap<String, String>();
     private String nimi;
     private int luokkaId;
     private String kayttaja;
 
     public Luokka() {
-
     }
 
     public Luokka(String nimi, int luokkaId, String kayttaja) {
@@ -67,6 +32,8 @@ public class Luokka {
         this.kayttaja = kayttaja;
     }
 
+    //Haetaan tietokannasta kaikki parametrina saatavan käyttäjätunnuksen omaavan käyttäjän luokat
+    //ja palautetaan ne luokat sisältävässä listassa
     public static List<Luokka> haeKaikki(String etsittavaKayttaja) throws NamingException, SQLException {
         String sql = "SELECT kayttaja, nimi, luokkaId from luokka where kayttaja = ?";
         Connection yhteys = Yhteys.getYhteys();
@@ -79,8 +46,6 @@ public class Luokka {
         Luokka loydettyLuokka = null;
 
         while (rs.next()) {
-            //Kutsutaan sopivat tiedot vastaanottavaa konstruktoria 
-            //ja asetetaan palautettava olio:
             loydettyLuokka = new Luokka();
             loydettyLuokka.setKayttaja(rs.getString("kayttaja"));
             loydettyLuokka.setNimi(rs.getString("nimi"));
@@ -88,7 +53,6 @@ public class Luokka {
             luokat.add(loydettyLuokka);
         }
 
-        //Jos kysely ei tuottanut tuloksia käyttäjä on nyt vielä null.
         //Suljetaan kaikki resurssit:
         try {
             rs.close();
@@ -105,6 +69,7 @@ public class Luokka {
         return luokat;
     }
 
+    //Poistetaan luokka tietokannasta, jolla on parametrin luokkaId.
     public static void poistaLuokka(int id) throws NamingException, SQLException {
 
         String sql = "delete from luokka where luokkaId = ?";
@@ -123,6 +88,7 @@ public class Luokka {
         }
     }
 
+    //Lisätään servlet puolella alustettu luokka olio tietokantaan 
     public void lisaaKantaan() throws NamingException, SQLException {
         String sql = "insert into luokka (nimi, kayttaja) values (?,?) RETURNING luokkaid";
         Connection yhteys = Yhteys.getYhteys();
@@ -130,6 +96,7 @@ public class Luokka {
         kysely.setString(1, this.getNimi());
         kysely.setString(2, this.getKayttaja());
 
+        //PostgreSQL:n ominaisuus, jolla pystyy lisäämään SERIAL tyyppiselle pääaavaimelle id:n automaattisesti
         ResultSet ids = kysely.executeQuery();
         ids.next();
 
@@ -150,6 +117,7 @@ public class Luokka {
 
     }
 
+    //Palautetaan boolean arvo sille löytyykö parametrin nimistä luokkaa tietokannasta
     public static boolean etsi(String luokanNimi) throws NamingException, SQLException {
         String sql = "SELECT nimi from luokka where nimi = ?";
         Connection yhteys = Yhteys.getYhteys();
@@ -194,7 +162,8 @@ public class Luokka {
     public String getNimi() {
         return this.nimi;
     }
-
+    
+    //Nimi setteri, jossa tarkistetaan ettei nimi ole tyhjä
     public void setNimi(String uusiNimi) {
         if (uusiNimi.trim().length() == 0) {
             virheet.put("nimi", "Nimi ei saa olla tyhjä");
@@ -212,10 +181,12 @@ public class Luokka {
         this.luokkaId = uusiId;
     }
 
+    //palautetaan true mikäli virheet lista on tyhjä 
     public boolean onkoKelvollinen() {
         return this.virheet.isEmpty();
     }
 
+    //palautetaan virhe listan virheet
     public Collection<String> getVirheet() {
         return virheet.values();
     }

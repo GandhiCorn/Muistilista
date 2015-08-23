@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Muistilista.Models;
 
 import java.sql.Connection;
@@ -22,6 +17,30 @@ import javax.naming.NamingException;
  */
 public class Askare {
 
+    
+
+
+    private Map<String, String> virheet = new HashMap<String, String>();
+    private String nimi;
+    private int tarkeys;
+    private String kayttaja;
+    private int askareenId;
+    private String luokka;
+
+    public Askare() {
+    }
+
+    public Askare(int askareenId, String nimi, int tarkeys, String luokka, String kayttaja) {
+        this.askareenId = askareenId;
+        this.luokka = luokka;
+        this.nimi = nimi;
+        this.tarkeys = tarkeys;
+        this.kayttaja = kayttaja;
+
+    }
+    
+        /*  Luokkaa poistaessa poistetaan myös sen luokan kaikki askareet defaultina,
+        joten tarvitaan tälläinen metodi poistamaan poistettavan luokan askareiden luokat*/
     public static void poistaAskareenLuokka(String nimi) throws NamingException, SQLException {
 
         String sql = "update askare set luokka = ? where luokka = ?";
@@ -42,26 +61,8 @@ public class Askare {
         }
 
     }
-
-    private Map<String, String> virheet = new HashMap<String, String>();
-    private String nimi;
-    private int tarkeys;
-    private String kayttaja;
-    private int askareenId;
-    private String luokka;
-
-    public Askare() {
-    }
-
-    public Askare(int askareenId, String nimi, int tarkeys, String luokka, String kayttaja) {
-        this.askareenId = askareenId;
-        this.luokka = luokka;
-        this.nimi = nimi;
-        this.tarkeys = tarkeys;
-        this.kayttaja = kayttaja;
-
-    }
-
+    
+    //Metodilla päivitetään askareen tiedot tietokanssa 
     public void paivitaAskare() throws NamingException, SQLException {
         String sql = "update askare set tarkeysArvo = ?, nimi = ?, kayttaja = ?, luokka = ? WHERE askareenId = ?";
         Connection yhteys = Yhteys.getYhteys();
@@ -85,30 +86,7 @@ public class Askare {
 
     }
 
-    /*    public static void paivitaAskare(int id, int tarkeys, String nimi, String kayttaja, String luokka) throws NamingException, SQLException {
-    
-     String sql = "update askare set tarkeysArvo = ?, nimi = ?, kayttaja = ?, luokka = ? WHERE askareenId = ?";
-     Connection yhteys = Yhteys.getYhteys();
-     PreparedStatement kysely = yhteys.prepareStatement(sql);
-     kysely.setInt(1, tarkeys);
-     kysely.setString(2, nimi);
-     kysely.setString(3, kayttaja);
-     kysely.setString(4, luokka);
-     kysely.setInt(5, id);
-    
-     kysely.executeUpdate();
-    
-     kysely.executeUpdate();
-     try {
-     kysely.close();
-     } catch (Exception e) {
-     }
-     try {
-     yhteys.close();
-     } catch (Exception e) {
-     }
-    
-     }*/
+    //Poistetaan parametrin id:n omaava askare tietokannasta
     public static void poistaAskare(int id) throws NamingException, SQLException {
 
         String sql = "delete from askare where askareenId = ?";
@@ -128,6 +106,7 @@ public class Askare {
 
     }
 
+    //Lisätään tietokantaan askare olio jolle ollaan alustettu servletin puolella tarvittavat tiedot
     public void lisaaKantaan() throws NamingException, SQLException {
         String sql = "insert into askare (tarkeysarvo, nimi, kayttaja, luokka) values (?,?,?,?) RETURNING askareenid";
         Connection yhteys = Yhteys.getYhteys();
@@ -136,7 +115,8 @@ public class Askare {
         kysely.setString(2, this.getNimi());
         kysely.setString(3, this.getKayttaja());
         kysely.setString(4, this.getLuokka());
-
+        
+        //PostgreSQL osaa jakaa SERIAL tyyppiselle pääavaimelle automaattisesti vapaan id:n
         ResultSet ids = kysely.executeQuery();
         ids.next();
 
@@ -157,6 +137,8 @@ public class Askare {
 
     }
 
+    
+    //Etsitään askare, jolla on parametrin id ja palautetaan sen olio
     public static Askare etsiAskare(int id) throws NamingException, SQLException {
 
         String sql = "select askareenid, tarkeysarvo, nimi, kayttaja, luokka from askare where askareenid = ?";
@@ -204,6 +186,8 @@ public class Askare {
 
     }
 
+    //Haetaan kaikki käyttäjän askareet tietokannasta, lisätään ne Askare Listille ja palautetaan se.
+    //Parametrina etsittävän käyttäjän käyttäjätunnus
     public static List<Askare> etsiAskareet(String kayttaja) throws NamingException, SQLException {
 
         String sql = "select askareenid, tarkeysarvo, nimi, kayttaja, luokka from askare where kayttaja = ?";
@@ -283,17 +267,12 @@ public class Askare {
         this.askareenId = uusiId;
     }
 
-    /*    public void setAskareenId(String uusiId) {
-     try {
-     setAskareenId(Integer.parseInt(uusiId));
-     } catch (NumberFormatException e) {
-     virheet.put("id", "AskareenIdssä jotain" + uusiId);
-     }
-     }*/
+    //Simppeli nimen asetus
     public void setNimi1(String uusiNimi) {
         this.nimi = uusiNimi;
     }
 
+    //Tarkistetaan nimen oikeellisuus ja lisätään virheet listaan jos niitä löytyy
     public void setNimi2(String uusiNimi) {
         if (uusiNimi.trim().length() == 0) {
             virheet.put("nimi", "Nimi ei saa olla tyhjä");
@@ -305,28 +284,31 @@ public class Askare {
 
     public void setTarkeys(int uusiTarkeys) {
         if (uusiTarkeys <= 0) {
-            virheet.put("tarkeys", "Askareella täytyy olla positiivinen tärkeysarvo.");
+            virheet.put("tarkeys", "Askareella täytyy olla positiivinen tärkeysarvo");
         } else {
             this.tarkeys = uusiTarkeys;
             virheet.remove("tarkeys");
         }
     }
 
+    //parsetaan string tyyppinen tärkeys intiin ja kutsutaan toista tärkeyden setteritä
     public void setTarkeys(String uusiTarkeys) {
         if (!uusiTarkeys.equals("")) {
             try {
                 setTarkeys(Integer.parseInt(uusiTarkeys));
                 virheet.remove("tarkeys");
             } catch (NumberFormatException e) {
-                virheet.put("tarkeys", "Askareen tärkeysarvon tulee olla kokonaisluku.");
+                virheet.put("tarkeys", "Askareen tärkeysarvon tulee olla kokonaisluku");
             }
         }
     }
 
+    //Simppeli luokan setteri
     public void setLuokka1(String uusiLuokka) {
         this.luokka = uusiLuokka;
     }
 
+    //Luokan setteri muutamalla tarkistuksella
     public void setLuokka2(String luokka) throws NamingException, SQLException {
         if (!luokka.equals("")) {
             if (!Luokka.etsi(luokka)) {
@@ -338,10 +320,12 @@ public class Askare {
         }
     }
 
+    //palautetaan true, mikäli virheet lista on tyhjä
     public boolean onkoKelvollinen() {
         return this.virheet.isEmpty();
     }
 
+    //palautetaan virhe listan kaikki virheet
     public Collection<String> getVirheet() {
         return virheet.values();
     }

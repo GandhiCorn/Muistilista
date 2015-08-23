@@ -36,11 +36,16 @@ public class AskareenPaivittaminen extends ToistuvaKoodi {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         HttpSession session = request.getSession();
+        
+        //haetaan käyttäjä sessionista
         Kayttaja kirjautunut = (Kayttaja) session.getAttribute("kirjautunut");
         String kayttaja = kirjautunut.getKayttajatunnus();
+        
+        //haetaan muokattavan askareen id
         int id = (Integer) session.getAttribute("id");
         String luokka = request.getParameter("luokka");
 
+        //alustetaan askare saaduilla parametreillä
         try {
             Askare uusiAskare = new Askare();
             uusiAskare.setNimi2(request.getParameter("nimi"));
@@ -51,12 +56,15 @@ public class AskareenPaivittaminen extends ToistuvaKoodi {
             uusiAskare.setKayttaja(kayttaja);
             uusiAskare.setAskareenId(id);
 
+            //jos saadut parametrit eivät tuottaneet virhettä, päivitetään askare ja asetetaan ilmoitus
+            //sekä näytetään askare etusivu
             if (uusiAskare.onkoKelvollinen()) {
                 uusiAskare.paivitaAskare();
                 session.setAttribute("ilmoitus", "Askareen muokkaus onnistui!");
                 response.sendRedirect("Index");
                 
-
+                //muuten näytetään virheet ja asetetaan askareen tiedot jotta kentät voidaan täyttää uudestaan
+                //näytetään JSP uudestaan
             } else {
                 Collection<String> virheet = uusiAskare.getVirheet();
                 request.setAttribute("virheet", virheet);
