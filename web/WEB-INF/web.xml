@@ -49,7 +49,7 @@
         <servlet-class>Muistilista.Servlets.AskareenLisaaminen</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>AskareServlet</servlet-name>
+        <servlet-name>AskareenPoistaminen</servlet-name>
         <servlet-class>Muistilista.Servlets.AskareenPoistaminen</servlet-class>
     </servlet>
     <servlet>
@@ -133,8 +133,8 @@
         <url-pattern>/AskareenLisaaminen</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>AskareServlet</servlet-name>
-        <url-pattern>/AskareServlet</url-pattern>
+        <servlet-name>AskareenPoistaminen</servlet-name>
+        <url-pattern>/AskareenPoistaminen</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AskareenPaivittaminen</servlet-name>
